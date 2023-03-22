@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">CRISTAL</string>
+    <string name="show_log">Log</string>
+    <string name="service">Service</string>
+    <string name="property">Property</string>
+    <string name="type">Primary Service</string>
+    <string name="start_scan">Scan</string>
+    <string name="stop_scan">Stop Scanning</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="read">Read</string>
+    <string name="write">Write</string>
+    <string name="notify">Notify</string>
+    <string name="indicate">Indicate</string>
+    <string name="clear_screen">Clear</string>
+    <string name="device_name">Device Name:&#160;</string>
+    <string name="mac_address">MAC Address:&#160;</string>
+    <string name="write_onTime">Write OnTime</string>
+    <string name="write_onTime_time">1000</string>
+    <string name="write_onTime_unit">ms</string>
+    <string name="string_hint">Type something here</string>
+    <string name="hex_hint">0123456789abcdef</string>
+    <string name="dec_hint">100</string>
+    <string name="setting">Setting</string>
+    <string name="scan_setting">Below you can configure the conditions of the devices that need to be scanned, which can be empty</string>
+    <string name="setting_name">Enter the broadcast name of the Bluetooth device, separated by commas</string>
+    <string name="setting_mac">Enter the MAC address of the Bluetooth device</string>
+    <string name="setting_uuid">Enter the UUID of the Bluetooth device, separated by commas</string>
+    <string name="setting_auto_reconnect">AutoConnect ?</string>
+    <string name="device_info">Device Information</string>
+    <string name="about">About</string>
+    <string name="about_details"><b>BLE Lab</b> is a generic tool which is designed for
+        BLE(Bluetooth Low Energy) debug. It support BLE Scan and Connection.
+        \n<b>V1.0.0</b></string>
+    <string name="denote">Denote</string>
+    <string name="denote_details">If this App is useful for
+        and you want to support the subsequent development and maintenance,
+        you can scan Wechat QR code to support me, and I would be grateful.</string>
+    <string name="feedback">Feedback</string>
+    <string name="feedback_details">If you found any bug, or you have new idea for this App,
+        welcome email me, 1055942474@qq.com.\nYou can also get the source code on Github.
+        \nhttps://github.com/langxing08/BLE-Lab</string>
+    <string name="ssid">SSID</string>
+    <string name="password">password</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pirates">wifi</string>
+    <string name="ninjas">sd</string>
+    <string name="blutooth">blutooth</string>
+    <string name="sdcard">sdcard</string>
+    <string name="wifi">wifi</string>
+    <string name="wifiradio">wifiradio</string>
+    <string name="reminder">remainder</string>
+    <string name="done">done</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string-array name="decoder">
+        <item>Str</item>
+        <item>Hex</item>
+        <item>Dec</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+    android:id="@+id/action_connect_item"
+    android:title="@string/disconnect"
+    android:orderInCategory="2"
+    app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_wifi_config"
+        android:orderInCategory="2"
+        android:title="wifi Config" />
+    <item
+        android:id="@+id/action_source_selection"
+        android:orderInCategory="2"
+        android:title="source Selection" />
+    <item
+    android:id="@+id/action_chat_show_log_item"
+    android:title="@string/show_log"
+    android:orderInCategory="3"
+    app:showAsAction="never" />
+
+</menu>

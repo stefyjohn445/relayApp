@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Characteristic Operate UI -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Receive area, including data format selection, Notify/Indicate enable, clear screen, read-->
+    <RelativeLayout
+        android:id="@+id/char_receivable_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <!-- Data format drop-down list -->
+        <Spinner
+            android:id="@+id/char_recv_fmt_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:textSize="14sp"/>
+
+        <!-- Clear screen button -->
+        <Button
+            android:id="@+id/char_clear_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/char_recv_fmt_select"
+            android:layout_marginEnd="10dp"
+            android:text="@string/clear_screen"
+            android:textSize="14sp"/>
+
+        <!-- Read data button -->
+        <Button
+            android:id="@+id/char_read_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/char_clear_btn"
+            android:layout_centerVertical="true"
+            android:text="@string/read"
+            android:textSize="14sp"/>
+
+        <!-- Notify/Indicate Enable/disable Button -->
+        <ToggleButton
+            android:id="@+id/char_notify_indicate_enable_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/toggle_drawable_selector"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:textAlignment="textStart"
+            android:textOn="@null"
+            android:textOff="@null"
+            android:checked="false"/>
+
+    </RelativeLayout>
+
+    <!-- Chat area -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/char_msg_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Send Area, including sending timing, sending button -->
+    <LinearLayout
+        android:id="@+id/char_sendable_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- Timed sending -->
+        <LinearLayout
+            android:id="@+id/char_send_onTime_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <CheckBox
+                android:id="@+id/char_send_onTime_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/write_onTime"/>
+
+            <EditText
+                android:id="@+id/char_send_onTime_et"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:inputType="numberDecimal"
+                android:hint="@string/write_onTime_time"
+                android:text="@string/write_onTime_time"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/write_onTime_unit"/>
+
+        </LinearLayout>
+
+        <!-- Send, including 3 parts including data format selection, text input box and buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Data format drop-down list-->
+            <Spinner
+                android:id="@+id/char_send_fmt_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"/>
+
+            <!-- Text input box, 3 out of 1 -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <!-- UTF-8 -->
+                <EditText
+                    android:id="@+id/char_write_string_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/string_hint"
+                    android:textSize="14sp"/>
+
+                <!-- HEX -->
+                <EditText
+                    android:id="@+id/char_write_hex_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789abcdef"
+                    android:hint="@string/hex_hint"
+                    android:textSize="14sp"
+                    android:visibility="gone"/>
+
+                <!-- DEC -->
+                <EditText
+                    android:id="@+id/char_write_dec_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="@string/dec_hint"
+                    android:textSize="14sp"
+                    android:visibility="gone"/>
+
+            </FrameLayout>
+
+            <!-- Send button -->
+            <Button
+                android:id="@+id/char_write_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/write"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
