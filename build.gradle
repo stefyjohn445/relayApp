@@ -1,6 +1,18 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+
+    ext.retrofit_version = "2.3.0"
+
+    ext.retrofit = [
+            retrofit: "com.squareup.retrofit2:retrofit:$retrofit_version",
+            retrofit_converter: "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    ]
+
+    ext.okhttp = [
+            okhttp: "com.squareup.okhttp3:okhttp:4.9.2",
+            logging_interceptor: "com.squareup.okhttp3:logging-interceptor:4.9.2"
+    ]
     
     repositories {
         google()

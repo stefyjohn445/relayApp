@@ -93,7 +93,40 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 .setReConnectCount(1, 5000)
                 .setConnectOverTime(20000)
                 .setOperateTimeout(5000);
+
+//        register();
+//        login();
     }
+
+//    private void register() {
+//
+//        ApiRepository.register("amma@nederig.com", "amma123", "amma", new Callback<RegisterResponse>() {
+//            @Override
+//            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RegisterResponse> call, Throwable t) {
+//
+//            }
+//        });
+//    }
+
+//    private void login() {
+//
+//        ApiRepository.Companion.login("amma@nederig.com", "amma123", new Callback<LoginResponse>() {
+//            @Override
+//            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<LoginResponse> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 
     @Override
     protected void onResume() {
