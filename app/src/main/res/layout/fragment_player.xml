@@ -108,12 +108,22 @@
         app:layout_constraintTop_toTopOf="@+id/view_other_controls"/>
 
     <!-- Playlist button -->
+    <TextView
+        android:id="@+id/tvPlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:text="PLAYLIST"
+        android:gravity="center"
+        android:textColor="#FF4081"
+        app:layout_constraintTop_toTopOf="@+id/btnPlaylist"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlaylist"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlaylist" />
     <ImageButton
         android:id="@+id/btnPlaylist"
-        android:layout_width="20dp"
-        android:layout_height="24dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:background="@null"
-        android:src="@drawable/btn_playlist"
+        android:src="@drawable/ic_playlist"
         android:scaleType="fitXY"
         android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="@+id/view_other_controls"
@@ -133,11 +143,11 @@
     <!-- Repeat Button -->
     <ImageButton
         android:id="@+id/btnRepeat"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:background="@null"
         android:scaleType="fitCenter"
-        android:src="@drawable/btn_repeat"
+        android:src="@drawable/ic_repeat"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/view_other_controls"
@@ -146,11 +156,11 @@
     <!-- Shuffle Button -->
     <ImageButton
         android:id="@+id/btnShuffle"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:background="@null"
         android:scaleType="fitCenter"
-        android:src="@drawable/btn_shuffle"
+        android:src="@drawable/ic_shuffle"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/btnRepeat"

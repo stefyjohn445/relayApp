@@ -16,13 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleNotifyCallback;
@@ -66,11 +60,11 @@ public class OperationActivity extends AppCompatActivity implements Observer {
     private EditText wifi_password;       // store password
 
 
-    private ImageButton btnPlay;
-    private ImageButton btnForward;
-    private ImageButton btnBackward;
-    private ImageButton btnNext;
-    private ImageButton btnPrevious;
+    private ImageView btnPlay;
+//    private ImageButton btnForward;
+//    private ImageButton btnBackward;
+    private ImageView btnNext;
+    private ImageView btnPrevious;
     private ImageButton btnPlaylist;
     private ImageButton btnRepeat;
     private ImageButton btnShuffle;
@@ -97,7 +91,7 @@ public class OperationActivity extends AppCompatActivity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_operation);
-      setContentView(R.layout.player);
+      setContentView(R.layout.fragment_player);
       initplayViw();
         initData();
         initView();
@@ -271,11 +265,11 @@ public class OperationActivity extends AppCompatActivity implements Observer {
     private void  initplayViw(){
 
         // All player buttons
-        btnPlay = (ImageButton) findViewById(R.id.btnPlay);
-        btnForward = (ImageButton) findViewById(R.id.btnForward);
-        btnBackward = (ImageButton) findViewById(R.id.btnBackward);
-        btnNext = (ImageButton) findViewById(R.id.btnNext);
-        btnPrevious = (ImageButton) findViewById(R.id.btnPrevious);
+        btnPlay = (ImageView) findViewById(R.id.btnPlay);
+//        btnForward = (ImageButton) findViewById(R.id.btnForward);
+//        btnBackward = (ImageButton) findViewById(R.id.btnBackward);
+        btnNext = (ImageView) findViewById(R.id.btnNext);
+        btnPrevious = (ImageView) findViewById(R.id.btnPrevious);
         btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
         btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
         btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
@@ -386,54 +380,54 @@ public class OperationActivity extends AppCompatActivity implements Observer {
          * Forwards song specified seconds
          * */
 
-        btnForward.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getActionMasked() == MotionEvent.ACTION_DOWN){
-                    System.out.println( "you just touch the screen down :-)"+ Toast.LENGTH_SHORT);
-                    System.out.println(Toast.LENGTH_SHORT);
-
-
-                }
-                if (event.getActionMasked() == MotionEvent.ACTION_UP){
-                    System.out.println( "you just touch the screen up :-)"+ Toast.LENGTH_SHORT);
-                    System.out.println(Toast.LENGTH_SHORT);
-
-                }
-                System.out.println("btnForward  --------->");
-
-                return false;
-            }
-
-
-        });
+//        btnForward.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (event.getActionMasked() == MotionEvent.ACTION_DOWN){
+//                    System.out.println( "you just touch the screen down :-)"+ Toast.LENGTH_SHORT);
+//                    System.out.println(Toast.LENGTH_SHORT);
+//
+//
+//                }
+//                if (event.getActionMasked() == MotionEvent.ACTION_UP){
+//                    System.out.println( "you just touch the screen up :-)"+ Toast.LENGTH_SHORT);
+//                    System.out.println(Toast.LENGTH_SHORT);
+//
+//                }
+//                System.out.println("btnForward  --------->");
+//
+//                return false;
+//            }
+//
+//
+//        });
 
 
         /**
          * Backward button click event
          * Backward song to specified seconds
          * */
-        btnBackward.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getActionMasked() == MotionEvent.ACTION_DOWN){
-                    System.out.println( "you just touch the screen down :-)"+ Toast.LENGTH_SHORT);
-                    System.out.println(Toast.LENGTH_SHORT);
-
-
-                }
-                if (event.getActionMasked() == MotionEvent.ACTION_UP){
-                    System.out.println( "you just touch the screen up :-)"+ Toast.LENGTH_SHORT);
-                    System.out.println(Toast.LENGTH_SHORT);
-
-                }
-                System.out.println("btnForward  --------->");
-
-                return false;
-            }
-
-
-        });
+//        btnBackward.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (event.getActionMasked() == MotionEvent.ACTION_DOWN){
+//                    System.out.println( "you just touch the screen down :-)"+ Toast.LENGTH_SHORT);
+//                    System.out.println(Toast.LENGTH_SHORT);
+//
+//
+//                }
+//                if (event.getActionMasked() == MotionEvent.ACTION_UP){
+//                    System.out.println( "you just touch the screen up :-)"+ Toast.LENGTH_SHORT);
+//                    System.out.println(Toast.LENGTH_SHORT);
+//
+//                }
+//                System.out.println("btnForward  --------->");
+//
+//                return false;
+//            }
+//
+//
+//        });
 
     }
 
@@ -628,23 +622,23 @@ public class OperationActivity extends AppCompatActivity implements Observer {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(titles[0]);
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar.setTitle(titles[0]);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (currentPage != SERVICE_LIST_PAGE) {
-                        currentPage--;
-                        changePage(currentPage);
-                    } else {
-                        finish();
-                    }
-                }
-            });
+//            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (currentPage != SERVICE_LIST_PAGE) {
+//                        currentPage--;
+//                        changePage(currentPage);
+//                    } else {
+//                        finish();
+//                    }
+//                }
+//            });
         }
 
     }
