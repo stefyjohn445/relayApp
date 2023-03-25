@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.cristal.ble.ui.RegisterFragment;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -93,24 +94,18 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 .setConnectOverTime(20000)
                 .setOperateTimeout(5000);
 
-//        register();
 //        login();
+
+        showRegisterFragment();
     }
 
-//    private void register() {
-//
-//        ApiRepository.register("amma@nederig.com", "amma123", "amma", new Callback<RegisterResponse>() {
-//            @Override
-//            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RegisterResponse> call, Throwable t) {
-//
-//            }
-//        });
-//    }
+    private void showRegisterFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new RegisterFragment(), "RegisterFragment")
+                .addToBackStack("RegisterFragment")
+                .commit();
+    }
+
 
 //    private void login() {
 //
