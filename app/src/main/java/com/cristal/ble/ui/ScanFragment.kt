@@ -214,6 +214,9 @@ class ScanFragment : Fragment() {
     //    }
     /**
      * Start BLE scan
+     *
+     * name: null  mac: 4C:7E:F8:93:D8:24  Rssi: -94  scanRecord: 02 01 1a 02 0a 07 0b ff 4c 00 10 06 09 1d 50 9e 33 68 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+     * name: boAt Rockerz 255 Pro+-GFP  mac: 40:00:01:D3:DB:C4  Rssi: -98  scanRecord: 02 0a f5 10 16 2c fe 00 90 20 00 02 80 80 80 02 00 a0 11 4f 1a 09 62 6f 41 74 20 52 6f 63 6b 65 72 7a 20 32 35 35 20 50 72 6f 2b 2d 47 46 50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
      */
     public fun bleStartScan() {
         BleManager.getInstance().scan(object : BleScanCallback() {
