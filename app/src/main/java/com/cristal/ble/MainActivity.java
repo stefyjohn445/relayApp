@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.cristal.ble.ui.LoginFragment;
 import com.cristal.ble.ui.RegisterFragment;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
@@ -47,7 +48,9 @@ import java.util.UUID;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
+public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks,
+        RegisterFragment.FragmentInteractionListener,
+        LoginFragment.FragmentInteractionListener{
 
     private static final String TAG = "MainActivity";
 
@@ -94,33 +97,31 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 .setConnectOverTime(20000)
                 .setOperateTimeout(5000);
 
-//        login();
-
-        showRegisterFragment();
+        signup();
     }
 
-    private void showRegisterFragment() {
+    public void signup() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new RegisterFragment(), "RegisterFragment")
                 .addToBackStack("RegisterFragment")
                 .commit();
     }
 
+    @Override
+    public void onRegisterSuccess() {
+    }
 
-//    private void login() {
-//
-//        ApiRepository.Companion.login("amma@nederig.com", "amma123", new Callback<LoginResponse>() {
-//            @Override
-//            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<LoginResponse> call, Throwable t) {
-//
-//            }
-//        });
-//    }
+    public void signin() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new LoginFragment(), "LoginFragment")
+                .addToBackStack("LoginFragment")
+                .commit();
+    }
+
+    @Override
+    public void onLoginSuccess() {
+
+    }
 
     @Override
     protected void onResume() {
@@ -516,5 +517,4 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             }
         }
     }
-
 }

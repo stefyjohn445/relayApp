@@ -1,8 +1,8 @@
 package com.cristal.ble.api
 
-import org.json.JSONObject
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 interface APIService {
 
@@ -24,6 +24,25 @@ interface APIService {
      *
      * invalid:
      * {"success": false, "msg": "'' is too short"}
+     *
+     * --> POST http://192.168.0.114:3001/api/users/register
+     * Content-Type: application/json; charset=UTF-8
+     * Content-Length: 76
+     * {"email":"binil.vrgs@gmail.com","password":"password","username":"username"}
+     * --> END POST (76-byte body)
+     * <-- 200 OK http://192.168.0.114:3001/api/users/register (378ms)
+     * Server: Werkzeug/2.1.2 Python/3.10.0
+     * Date: Sat, 25 Mar 2023 19:13:34 GMT
+     * Content-Type: application/json
+     * Content-Length: 92
+     * Access-Control-Allow-Origin: *
+     * Connection: close
+     * {
+     *  "success": true,
+     *  "userID": 2,
+     *  "msg": "The user was successfully registered"
+     * }
+     * <-- END HTTP (92-byte body)
      * */
     @POST("/api/users/register")
     fun register(
@@ -55,6 +74,29 @@ interface APIService {
      *  "success": false,
      *  "msg": "Wrong credentials."
      * }
+     *
+     * --> POST http://192.168.0.114:3001/api/users/login
+     * Content-Type: application/json; charset=UTF-8
+     * Content-Length: 54
+     * {"email":"binil.vrgs@gmail.com","password":"password"}
+     * --> END POST (54-byte body)
+     * <-- 200 OK http://192.168.0.114:3001/api/users/login (401ms)
+     * Server: Werkzeug/2.1.2 Python/3.10.0
+     * Date: Sat, 25 Mar 2023 19:27:54 GMT
+     * Content-Type: application/json
+     * Content-Length: 299
+     * Access-Control-Allow-Origin: *
+     * Connection: close
+     * {
+     *     "success": true,
+     *     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJpbmlsLnZyZ3NAZ21haWwuY29tIiwiZXhwIjoxNjc5Nzc0Mjc0fQ.r9D4fuM4wtKmHcQgE8pSxJ407fhnhE2J-LHoLgye5u0",
+     *     "user": {
+     *         "_id": 2,
+     *         "username": "username",
+     *         "email": "binil.vrgs@gmail.com"
+     *     }
+     * }
+     * <-- END HTTP (299-byte body)
      * */
     @POST("/api/users/login")
     fun login(

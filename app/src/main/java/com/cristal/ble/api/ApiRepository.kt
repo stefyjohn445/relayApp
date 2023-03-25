@@ -8,16 +8,16 @@ class ApiRepository {
     companion object {
 
         fun register(
+            username: String,
             email: String,
             password: String,
-            username: String,
             listener: Callback<RegisterResponse>
         ) {
 
             val req = RegisterRequest(
+                username = username,
                 email = email,
-                password = password,
-                username = username
+                password = password
             )
 
             val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
