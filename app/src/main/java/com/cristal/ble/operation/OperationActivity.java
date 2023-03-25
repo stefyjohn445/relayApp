@@ -4,17 +4,16 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
 
@@ -23,15 +22,12 @@ import com.clj.fastble.callback.BleNotifyCallback;
 import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
-import com.cristal.ble.PlayerUi;
 import com.cristal.ble.R;
 import com.cristal.ble.comm.Observer;
 import com.cristal.ble.comm.ObserverManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.cristal.ble.operation.CharacteristicOperationFragment.*;
 
 public class OperationActivity extends AppCompatActivity implements Observer {
 
@@ -81,7 +77,7 @@ public class OperationActivity extends AppCompatActivity implements Observer {
 
     private boolean playpuseflag = true;
 
-    private android.support.v7.widget.Toolbar toolbar;
+    private androidx.appcompat.widget.Toolbar toolbar;
     private List<Fragment> fragmentList = new ArrayList<>();
     private int currentPage = SERVICE_LIST_PAGE;
     private final String[] titles = {"Service List","Char List","Char Operation"};
