@@ -40,9 +40,9 @@
         android:id="@+id/tv_playlist"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:text="Signup"
+        android:text="Signin"
         app:layout_constraintStart_toStartOf="@+id/view_other_controls"
         app:layout_constraintTop_toTopOf="@+id/view_other_controls"/>
 
@@ -119,6 +119,8 @@
         android:layout_marginEnd="80dp"
         android:layout_marginTop="8dp"
         android:text="I don't have account"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="@+id/view_other_controls"
         app:layout_constraintTop_toBottomOf="@+id/bt_login"/>

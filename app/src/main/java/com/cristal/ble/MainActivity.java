@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public void signup() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new RegisterFragment(), "RegisterFragment")
-                .addToBackStack("RegisterFragment")
                 .commit();
     }
 
@@ -114,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public void signin() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new LoginFragment(), "LoginFragment")
-                .addToBackStack("LoginFragment")
                 .commit();
     }
 
