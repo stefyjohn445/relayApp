@@ -31,7 +31,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         TextView macTxt;
         TextView rssiTxt;
 
-        Button connectBtn;
+        TextView connectBtn;
 
         ViewHolder(View view) {
             super(view);
@@ -43,7 +43,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
             deviceNameTxt = (TextView) view.findViewById(R.id.device_name_txt);
             macTxt = (TextView) view.findViewById(R.id.mac_txt);
             rssiTxt = (TextView) view.findViewById(R.id.rssi_txt);
-            connectBtn = (Button) view.findViewById(R.id.connect_btn);
+            connectBtn = (TextView) view.findViewById(R.id.connect_btn);
         }
     }
 
