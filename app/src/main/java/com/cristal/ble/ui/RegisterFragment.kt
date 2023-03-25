@@ -81,7 +81,6 @@ class RegisterFragment : Fragment() {
     }
 
     interface FragmentInteractionListener{
-        fun onRegisterSuccess()
         fun signin()
     }
 
