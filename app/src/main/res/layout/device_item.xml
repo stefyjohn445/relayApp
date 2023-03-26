@@ -10,7 +10,7 @@
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/colorPrimary"
     app:cardCornerRadius="8dp"
-    android:layout_margin="32dp">
+    android:layout_margin="16dp">
 
 <RelativeLayout
     android:orientation="vertical"

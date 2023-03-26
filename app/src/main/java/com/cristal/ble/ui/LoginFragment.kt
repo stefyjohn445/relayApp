@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.cristal.ble.AppPreference
 import com.cristal.ble.R
 import com.cristal.ble.api.ApiRepository
 import com.cristal.ble.api.LoginResponse
@@ -57,6 +58,7 @@ class LoginFragment : Fragment() {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
 
                 response.body()?.let {
+                    AppPreference.preference?.loginResponse = it
                     mListener?.onLoginSuccess()
                 } ?: Toast.makeText(context, "Registration failed", Toast.LENGTH_SHORT).show()
             }

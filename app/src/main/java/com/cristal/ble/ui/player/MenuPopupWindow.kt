@@ -53,7 +53,7 @@ class MenuPopupWindow(val context: AppCompatActivity) : View.OnClickListener{
     }
 
     fun showAsDropDown(view: View) {
-        mMenuPopupWindow.showAsDropDown(view, -30, -30)
+        mMenuPopupWindow.showAsDropDown(view, -300, 30)
     }
 
     fun setMenuListener(onClickListener: MenuListener) {

@@ -5,30 +5,28 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import com.cristal.ble.ui.LoginFragment;
-import com.cristal.ble.ui.RegisterFragment;
-import com.cristal.ble.ui.ScanFragment;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import com.clj.fastble.BleManager;
 import com.clj.fastble.data.BleDevice;
+import com.cristal.ble.ui.LoginFragment;
+import com.cristal.ble.ui.RegisterFragment;
+import com.cristal.ble.ui.ScanFragment;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pub.devrel.easypermissions.AppSettingsDialog;
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks,
         RegisterFragment.FragmentInteractionListener,
@@ -66,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        new AppPreference(this);
+
 //        getSupportFragmentManager().beginTransaction().add(R.id.fragment_con,PlayerUi.newInstance(),"music player").commit();
         checkPermissions();
 
@@ -79,7 +79,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 .setConnectOverTime(20000)
                 .setOperateTimeout(5000);
 
-        signup();
+//        if (AppPreference.preference != null && AppPreference.preference.getLoginResponse() != null) {
+            scan();
+//        } else {
+//            signin();
+//        }
     }
 
     public void signup() {
