@@ -24,10 +24,12 @@
         android:id="@+id/tv_playlist"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="#2a2a2a"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:text="Scanning for devices ..."
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -35,16 +37,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
+        app:layout_constraintGuide_percent="0.4" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/device_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="visible"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintTop_toBottomOf="@+id/guideline">
+        app:layout_constraintTop_toBottomOf="@+id/tv_playlist">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/device_recycler_view"

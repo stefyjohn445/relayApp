@@ -53,7 +53,8 @@
             android:layout_marginBottom="2dp"
             tools:text="CRISTAL_CONTROL"
             android:textColor="#ffffff"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:textStyle="bold"/>
 
         <!--MAC-->
         <TextView
