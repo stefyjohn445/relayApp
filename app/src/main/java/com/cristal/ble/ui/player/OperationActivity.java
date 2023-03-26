@@ -1,33 +1,35 @@
-package com.cristal.ble.operation;
+package com.cristal.ble.ui.player;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
+import android.os.Bundle;
 import android.os.Handler;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import android.os.SystemClock;
+import android.view.*;
+import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.*;
-
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleNotifyCallback;
 import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
+import com.cristal.ble.MainActivity;
 import com.cristal.ble.R;
 import com.cristal.ble.comm.Observer;
 import com.cristal.ble.comm.ObserverManager;
+import com.cristal.ble.operation.CharacteristicListFragment;
+import com.cristal.ble.operation.CharacteristicOperationFragment;
+import com.cristal.ble.operation.ServiceListFragment;
+import okhttp3.internal.cache2.Relay;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class OperationActivity extends AppCompatActivity implements Observer {
 
@@ -82,6 +84,8 @@ public class OperationActivity extends AppCompatActivity implements Observer {
     private int currentPage = SERVICE_LIST_PAGE;
     private final String[] titles = {"Service List","Char List","Char Operation"};
     private AlertDialog src_alertDialog;
+
+    private MenuPopupWindow mMenuPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -274,6 +278,10 @@ public class OperationActivity extends AppCompatActivity implements Observer {
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
 
+        findViewById(R.id.btn_menu).setOnClickListener((view) -> {
+            showMenu(view);
+        });
+
         /**
          * Play button click event
          * plays a song and changes button to pause image
@@ -427,6 +435,48 @@ public class OperationActivity extends AppCompatActivity implements Observer {
 
     }
 
+    private long lastClickTime = 0L;
+
+    public void showMenu(View view) {
+
+        if (SystemClock.elapsedRealtime() - lastClickTime < TimeUnit.SECONDS.toMillis(1)) {
+            return;
+        }
+        lastClickTime = SystemClock.elapsedRealtime();
+
+        if (mMenuPopupWindow != null && mMenuPopupWindow.isShowing()){
+            mMenuPopupWindow.dismiss();
+            return;
+        }
+
+        mMenuPopupWindow = new MenuPopupWindow(OperationActivity.this);
+        mMenuPopupWindow.showAsDropDown(view);
+        mMenuPopupWindow.setMenuListener(new MenuPopupWindow.MenuListener() {
+            @Override
+            public void onDismiss() {
+                lastClickTime = 0;
+            }
+
+            @Override
+            public void onClick(@NotNull View view) {
+                switch (view.getId()) {
+                    case R.id.menuWifiConfig:
+                        Toast.makeText(OperationActivity.this, "menuWifiConfig", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.menuSelectSource:
+                        Toast.makeText(OperationActivity.this, "menuSelectSource", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.menuAbout:
+                        Toast.makeText(OperationActivity.this, "menuAbout", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+        mMenuPopupWindow.show();
+    }
 
     /**
      * Update timer on seekbar

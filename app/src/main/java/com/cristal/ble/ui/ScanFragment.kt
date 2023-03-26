@@ -25,7 +25,7 @@ import com.cristal.ble.R
 import com.cristal.ble.adapter.DeviceAdapter
 import com.cristal.ble.adapter.DeviceAdapter.OnDeviceClickListener
 import com.cristal.ble.comm.ObserverManager
-import com.cristal.ble.operation.OperationActivity
+import com.cristal.ble.ui.player.OperationActivity
 
 /**
  * A simple [Fragment] subclass.

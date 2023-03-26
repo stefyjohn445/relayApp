@@ -52,6 +52,9 @@
     <string name="wifiradio">wifiradio</string>
     <string name="reminder">remainder</string>
     <string name="done">done</string>
+    <string name="menu_item_wifi_config">WiFi Configuration</string>
+    <string name="menu_item_select_source">Select source</string>
+    <string name="menu_item_about">About</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string-array name="decoder">

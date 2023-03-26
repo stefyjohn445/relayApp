@@ -6,6 +6,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#ffffff">
 
+    <ImageButton
+        android:id="@+id/btn_menu"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:src="@drawable/ic_menu"
+        android:scaleType="fitXY"
+        android:layout_margin="24dp"
+        android:elevation="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 <!--    Header-->
     <ImageView
         android:id="@+id/bg_image"

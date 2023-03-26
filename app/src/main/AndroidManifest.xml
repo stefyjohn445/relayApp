@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.cristal.ble.operation.OperationActivity" />
+        <activity android:name="com.cristal.ble.ui.player.OperationActivity" />
     </application>
 
 </manifest>

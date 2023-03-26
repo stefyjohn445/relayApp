@@ -20,11 +20,12 @@ import android.widget.TextView;
 
 import com.cristal.ble.R;
 import com.cristal.ble.tool.SampleGattAttributes;
+import com.cristal.ble.ui.player.OperationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.cristal.ble.operation.OperationActivity.CHAR_OPERATION_PAGE;
+import static com.cristal.ble.ui.player.OperationActivity.CHAR_OPERATION_PAGE;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class CharacteristicListFragment extends Fragment{
