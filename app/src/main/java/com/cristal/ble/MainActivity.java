@@ -79,11 +79,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 .setConnectOverTime(20000)
                 .setOperateTimeout(5000);
 
-//        if (AppPreference.preference != null && AppPreference.preference.getLoginResponse() != null) {
+        if (AppPreference.preference != null && AppPreference.preference.getLoginResponse() != null) {
             scan();
-//        } else {
-//            signin();
-//        }
+        } else {
+            signin();
+        }
     }
 
     public void signup() {

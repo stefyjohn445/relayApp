@@ -52,10 +52,29 @@
         android:text="@string/menu_item_select_source"
         android:textColor="@color/colorWhite"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/menuAbout"
+        app:layout_constraintBottom_toTopOf="@+id/menuLogout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@+id/menuWifiConfig"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/menuLogout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="1dp"
+        android:background="@color/popupBackgroundColor"
+        android:fontFamily="@font/ubuntu_m"
+        android:gravity="center_vertical"
+        android:minHeight="40dp"
+        android:text="@string/menu_item_logout"
+        android:textColor="@color/colorWhite"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/menuAbout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@+id/menuSelectSource"
         tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -74,7 +93,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@+id/menuSelectSource"
+        app:layout_constraintTop_toBottomOf="@+id/menuLogout"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Guideline

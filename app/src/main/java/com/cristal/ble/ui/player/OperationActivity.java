@@ -3,6 +3,7 @@ package com.cristal.ble.ui.player;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -17,6 +18,7 @@ import com.clj.fastble.callback.BleNotifyCallback;
 import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
+import com.cristal.ble.AppPreference;
 import com.cristal.ble.MainActivity;
 import com.cristal.ble.R;
 import com.cristal.ble.comm.Observer;
@@ -468,6 +470,12 @@ public class OperationActivity extends AppCompatActivity implements Observer {
                         break;
                     case R.id.menuAbout:
                         Toast.makeText(OperationActivity.this, "menuAbout", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.menuLogout:
+                        AppPreference.preference.logout();
+                        startActivity(new Intent(OperationActivity.this, MainActivity.class));
+                        OperationActivity.this.finish();
+                        Toast.makeText(OperationActivity.this, "User logged out", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;

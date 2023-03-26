@@ -17,6 +17,7 @@ class MenuPopupWindow(val context: AppCompatActivity) : View.OnClickListener{
     private lateinit var tvWifiConfig: AppCompatTextView
     private lateinit var tvSelectSource: AppCompatTextView
     private lateinit var tvAbout: AppCompatTextView
+    private lateinit var tvLogout: AppCompatTextView
 
     interface MenuListener {
         fun onClick(view: View)
@@ -44,10 +45,12 @@ class MenuPopupWindow(val context: AppCompatActivity) : View.OnClickListener{
 
             tvWifiConfig = findViewById(R.id.menuWifiConfig)
             tvSelectSource = findViewById(R.id.menuSelectSource)
+            tvLogout = findViewById(R.id.menuLogout)
             tvAbout = findViewById(R.id.menuAbout)
 
             tvWifiConfig.setOnClickListener(this@MenuPopupWindow)
             tvSelectSource.setOnClickListener(this@MenuPopupWindow)
+            tvLogout.setOnClickListener(this@MenuPopupWindow)
             tvAbout.setOnClickListener(this@MenuPopupWindow)
         }
     }
@@ -68,6 +71,7 @@ class MenuPopupWindow(val context: AppCompatActivity) : View.OnClickListener{
 
         tvWifiConfig.visibility = View.VISIBLE
         tvSelectSource.visibility = View.VISIBLE
+        tvLogout.visibility = View.VISIBLE
         tvAbout.visibility = View.VISIBLE
     }
 
@@ -78,6 +82,7 @@ class MenuPopupWindow(val context: AppCompatActivity) : View.OnClickListener{
                 TAG_MENU, when (view.id) {
                     R.id.menuWifiConfig -> "menuWifiConfig"
                     R.id.menuSelectSource -> "menuSelectSource"
+                    R.id.menuLogout -> "menuLogout"
                     R.id.menuAbout -> "menuAbout"
                     else -> ""
                 }
