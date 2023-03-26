@@ -1,6 +1,7 @@
 package com.cristal.ble.ui.player;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Intent;
@@ -26,10 +27,11 @@ import com.cristal.ble.comm.ObserverManager;
 import com.cristal.ble.operation.CharacteristicListFragment;
 import com.cristal.ble.operation.CharacteristicOperationFragment;
 import com.cristal.ble.operation.ServiceListFragment;
-import okhttp3.internal.cache2.Relay;
+import com.cristal.ble.ui.PlaylistFragment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -210,57 +212,43 @@ public class OperationActivity extends AppCompatActivity implements Observer {
         return true;
     }
 
-        public void onRadioButtonClicked(View view) {
+        public void onRadioButtonClicked(int id) {
             // Is the button now checked?
             byte [] cmd = new byte[2];
             cmd[0] = 0x1; //CONTROLCMD enum in firmwire
 
 
-            boolean checked = ((RadioButton) view).isChecked();
 
             // Check which radio button was clicked
-            switch(view.getId()) {
-                case R.id.radio_wifi:
-                    if (checked)
-                        {
-                            cmd[1] = 0x0A;
-                            // wifi are the best
-                            System.out.println("########### radio_wifi");
-                        }
-                    break;
-                case R.id.radio_sdcard:
-                    if (checked)
-                    {// sd card rule
-                        cmd[1] = 0x0B;
-                        System.out.println("########### radio_sdcard");
-                    }
-                    break;
+            switch(id) {
+                case R.id.bt_wifi:
 
+                    cmd[1] = 0x0A;
+                    // wifi are the best
+                    System.out.println("########### radio_wifi");
+                    break;
+                case R.id.bt_sdcard:
 
-                case R.id.radio_blutooth:
-                    if (checked)
-                        {
-                            cmd[1] = 0x0C;
-                            // bluetooth rule
-                            System.out.println("########### radio_blutooth");
-                        }
+                    // sd card rule
+                    cmd[1] = 0x0B;
+                    System.out.println("########### radio_sdcard");
+                    break;
+                case R.id.bt_bluetooth:
+
+                    cmd[1] = 0x0C;
+                    // bluetooth rule
+                    System.out.println("########### radio_blutooth");
                     break;
 
-                case R.id.radio_wifiradio:
-                    if (checked)
-                    {// sd card rule
-                        cmd[1] = 0x0D;
-                        System.out.println("########### radio_sdcard");
-                    }
+                case R.id.bt_wifi_cloud:
+                    // sd card rule
+                    cmd[1] = 0x0D;
+                    System.out.println("########### radio_sdcard");
 
                     break;
-
-
             }
             sendMusicControlCmd(cmd);
-            src_alertDialog.cancel();
-
-        }
+     }
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -276,12 +264,16 @@ public class OperationActivity extends AppCompatActivity implements Observer {
         btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
         btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
         songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
-        songTitleLabel = (TextView) findViewById(R.id.songTitle);
+//        songTitleLabel = (TextView) findViewById(R.id.songTitle);
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
 
         findViewById(R.id.btn_menu).setOnClickListener((view) -> {
             showMenu(view);
+        });
+
+        findViewById(R.id.tvPlaylist).setOnClickListener((view) -> {
+            showPlaylist(view);
         });
 
         /**
@@ -437,6 +429,12 @@ public class OperationActivity extends AppCompatActivity implements Observer {
 
     }
 
+    private void showPlaylist(View view) {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, PlaylistFragment.newInstance(playList), "playList")
+                .commit();
+    }
+
     private long lastClickTime = 0L;
 
     public void showMenu(View view) {
@@ -466,7 +464,8 @@ public class OperationActivity extends AppCompatActivity implements Observer {
                         Toast.makeText(OperationActivity.this, "menuWifiConfig", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.menuSelectSource:
-                        Toast.makeText(OperationActivity.this, "menuSelectSource", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OperationActivity.this, "please select music source", Toast.LENGTH_SHORT).show();
+                        selectMusicSource();
                         break;
                     case R.id.menuAbout:
                         Toast.makeText(OperationActivity.this, "menuAbout", Toast.LENGTH_SHORT).show();
@@ -480,10 +479,45 @@ public class OperationActivity extends AppCompatActivity implements Observer {
                     default:
                         break;
                 }
+
+                if (mMenuPopupWindow != null && mMenuPopupWindow.isShowing()) {
+                    mMenuPopupWindow.dismiss();
+                }
             }
         });
 
         mMenuPopupWindow.show();
+    }
+
+    private void selectMusicSource() {
+        final Dialog dialog = new Dialog(OperationActivity.this);
+        dialog.setContentView(R.layout.layout_select_source);
+
+        dialog.findViewById(R.id.bt_wifi).setOnClickListener(v -> {
+            onRadioButtonClicked(R.id.bt_wifi);
+            playList = new ArrayList<>();
+            dialog.dismiss();
+        });
+
+        dialog.findViewById(R.id.bt_sdcard).setOnClickListener(v -> {
+            onRadioButtonClicked(R.id.bt_sdcard);
+            playList = new ArrayList<>();
+            dialog.dismiss();
+        });
+
+        dialog.findViewById(R.id.bt_bluetooth).setOnClickListener(v -> {
+            onRadioButtonClicked(R.id.bt_bluetooth);
+            playList = new ArrayList<>();
+            dialog.dismiss();
+        });
+
+        dialog.findViewById(R.id.bt_wifi_cloud).setOnClickListener(v -> {
+            onRadioButtonClicked(R.id.bt_wifi_cloud);
+            playList = new ArrayList<>();
+            dialog.dismiss();
+        });
+
+        dialog.show();
     }
 
     /**
@@ -593,6 +627,8 @@ public class OperationActivity extends AppCompatActivity implements Observer {
                 }
         );
     }
+
+    ArrayList<String> playList = new ArrayList<>();
     private void getNotification(){
 
         System.out.println("Notify 11---->: ");
@@ -644,11 +680,12 @@ public class OperationActivity extends AppCompatActivity implements Observer {
 
 
                             }
-
-
+                        }else if (data[0] == 6){
+                            playList.add(new String(data).substring(1));
                         }
 
-                        System.out.println("charDisplayRecvData    -----> "+tmp);
+                        System.out.println("charDisplayRecvData    -----> "+data);
+                        System.out.println("charDisplayRecvData    =====> "+ Arrays.deepToString(playList.toArray()));
                     }
                 }
         );
