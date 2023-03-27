@@ -123,4 +123,14 @@
         android:layout_height="match_parent"
         android:id="@+id/fragment_container"/>
 
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_collapseMode="parallax"
+        tools:context="com.vedicpi.development.com.vedicpi.parikrama.development.MapsActivity" />
+
+
 </androidx.drawerlayout.widget.DrawerLayout>
