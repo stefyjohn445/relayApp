@@ -27,6 +27,8 @@ import com.cristal.ble.comm.ObserverManager;
 import com.cristal.ble.operation.CharacteristicListFragment;
 import com.cristal.ble.operation.CharacteristicOperationFragment;
 import com.cristal.ble.operation.ServiceListFragment;
+import com.cristal.ble.MapFragment;
+import com.cristal.ble.ui.LoginFragment;
 import com.cristal.ble.ui.PlaylistFragment;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,7 +37,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class OperationActivity extends AppCompatActivity implements Observer {
+import com.cristal.ble.ui.ScanFragment;
+import com.cristal.ble.ui.player.CommandEnum;
+
+public class OperationActivity extends AppCompatActivity implements Observer,PlaylistFragment.FragmentInteractionListener{
 
     private static final String TAG = "OperationActivity";
 
@@ -47,8 +52,8 @@ public class OperationActivity extends AppCompatActivity implements Observer {
 
     private BleDevice bleDevice;
     private String uuid_service = "0000abf0-0000-1000-8000-00805f9b34fb";
-    private String uuid_write = "0000abf3-0000-1000-8000-00805f9b34fb";
-    private String uuid_notify = "0000abf2-0000-1000-8000-00805f9b34fb";  //for receiving the data from device
+    private String uuid_write   = "0000abf3-0000-1000-8000-00805f9b34fb";
+    private String uuid_notify  = "0000abf2-0000-1000-8000-00805f9b34fb";  //for receiving the data from device
 
     private BluetoothGattService bluetoothGattService;
     private BluetoothGattCharacteristic bluetoothGattCharacteristic;
@@ -63,7 +68,7 @@ public class OperationActivity extends AppCompatActivity implements Observer {
 
 
     private ImageView btnPlay;
-//    private ImageButton btnForward;
+    //    private ImageButton btnForward;
 //    private ImageButton btnBackward;
     private ImageView btnNext;
     private ImageView btnPrevious;
@@ -72,14 +77,15 @@ public class OperationActivity extends AppCompatActivity implements Observer {
     private ImageButton btnShuffle;
     private SeekBar songProgressBar;
 
-    private  byte PROGRESSBAR = 0x5;
-    private  byte CMDINITSTATE = 0x7;
+
     // Handler to update UI timer, progress bar etc,.
     private Handler mHandler = new Handler();;
 
     private TextView songTitleLabel;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
+    private TextView CurrentSong;
+    private TextView CurrentSong2;
 
     private boolean playpuseflag = true;
 
@@ -90,20 +96,22 @@ public class OperationActivity extends AppCompatActivity implements Observer {
     private AlertDialog src_alertDialog;
 
     private MenuPopupWindow mMenuPopupWindow;
+    private CommandEnum CMD = new CommandEnum();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_operation);
-      setContentView(R.layout.fragment_player);
-      initplayViw();
+        //  setContentView(R.layout.activity_operation);
+        setContentView(R.layout.fragment_player);
+        initplayViw();
         initData();
         initView();
 
-//        initPage();
+        //  initPage();
         getNotification();
         ObserverManager.getInstance().addObserver(this);
-//      getSupportFragmentManager().beginTransaction().add(R.id.fragment_con, PlayerUi.newInstance(),"music player").commit();
+        //  getSupportFragmentManager().beginTransaction().add(R.id.fragment_con, PlayerUi.newInstance(),"music player").commit();
+
 
     }
 
@@ -212,62 +220,65 @@ public class OperationActivity extends AppCompatActivity implements Observer {
         return true;
     }
 
-        public void onRadioButtonClicked(int id) {
-            // Is the button now checked?
-            byte [] cmd = new byte[2];
-            cmd[0] = 0x1; //CONTROLCMD enum in firmwire
+    public void onRadioButtonClicked(int id) {
+
+        // Check which radio button was clicked
+        switch(id) {
+            case R.id.bt_wifi:
+
+                sendMusicControlCmd(CMD.getCMD_SRC_WIFI());
+
+                // wifi are the best
+                System.out.println("########### radio_wifi");
+                break;
+            case R.id.bt_sdcard:
+
+                // sd card rule
+                System.out.println("########### radio_sdcard");
+                sendMusicControlCmd(CMD.getCMD_SRC_SD());
+
+                break;
+            case R.id.bt_bluetooth:
+                // bluetooth rule
+                System.out.println("########### radio_blutooth");
+                sendMusicControlCmd(CMD.getCMD_SRC_BLUTOOTH_STREAM());
+                break;
+
+            case R.id.bt_wifi_cloud:
+                // sd card rule
+                System.out.println("########### radio_sdcard");
+//                    sendMusicControlCmd(CMD.getCMD_SRC_WIFI_FM());
+//                sendMusicControlCmd(CMD.getSDSONGURL());
+                showMapView();
 
 
 
-            // Check which radio button was clicked
-            switch(id) {
-                case R.id.bt_wifi:
-
-                    cmd[1] = 0x0A;
-                    // wifi are the best
-                    System.out.println("########### radio_wifi");
-                    break;
-                case R.id.bt_sdcard:
-
-                    // sd card rule
-                    cmd[1] = 0x0B;
-                    System.out.println("########### radio_sdcard");
-                    break;
-                case R.id.bt_bluetooth:
-
-                    cmd[1] = 0x0C;
-                    // bluetooth rule
-                    System.out.println("########### radio_blutooth");
-                    break;
-
-                case R.id.bt_wifi_cloud:
-                    // sd card rule
-                    cmd[1] = 0x0D;
-                    System.out.println("########### radio_sdcard");
-
-                    break;
-            }
-            sendMusicControlCmd(cmd);
-     }
+                break;
+        }
+    }
 
 
     @SuppressLint("ClickableViewAccessibility")
     private void  initplayViw(){
 
         // All player buttons
+
+
+
         btnPlay = (ImageView) findViewById(R.id.btnPlay);
-//        btnForward = (ImageButton) findViewById(R.id.btnForward);
-//        btnBackward = (ImageButton) findViewById(R.id.btnBackward);
+//      btnForward = (ImageButton) findViewById(R.id.btnForward);
+//      btnBackward = (ImageButton) findViewById(R.id.btnBackward);
         btnNext = (ImageView) findViewById(R.id.btnNext);
         btnPrevious = (ImageView) findViewById(R.id.btnPrevious);
         btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
         btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
         btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
         songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
-//        songTitleLabel = (TextView) findViewById(R.id.songTitle);
+//      songTitleLabel = (TextView) findViewById(R.id.songTitle);
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
-
+        CurrentSong = (TextView) findViewById(R.id.tv_playlist);
+        CurrentSong2 = (TextView) findViewById(R.id.tv_song);
         findViewById(R.id.btn_menu).setOnClickListener((view) -> {
             showMenu(view);
         });
@@ -283,8 +294,11 @@ public class OperationActivity extends AppCompatActivity implements Observer {
          * */
 
 //        songTitleLabel.setText("amma");
+        sendMusicControlCmd(CMD.getCMD_PLAYBUTTON_CURRENT_STATUS());
 
-        // Listeners
+
+
+        // ListenerssendMusicControlCmd
         songProgressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -302,7 +316,6 @@ public class OperationActivity extends AppCompatActivity implements Observer {
             }
         }); // Important
 
-//        playSong(0);
 
         // set Progress bar values
         songProgressBar.setProgress(0);
@@ -313,27 +326,25 @@ public class OperationActivity extends AppCompatActivity implements Observer {
 
             @Override
             public void onClick(View arg0) {
-                byte [] cmd = new byte[2];
-                cmd[0] = 0x1; //CONTROLCMD enum in firmwire
+
                 // check for already playing
+
+//                System.out.println(btnPlay.);
+
                 if(!playpuseflag){
-                        playpuseflag = true;
+                    // Changing button image to play button
+                    sendMusicControlCmd(CMD.getCMD_PLAY());
+//                    btnPlay.setImageResource(R.drawable.btn_pause);
 
-                        // Changing button image to play button
-                        cmd[1] = 0x3;
-
-                        btnPlay.setImageResource(R.drawable.btn_play);
 
                 }else{
                     // Resume song
-                        playpuseflag = false;
-                        cmd[1] = 0x4;
+                    sendMusicControlCmd(CMD.getCMD_POUSE());
+//                    btnPlay.setImageResource(R.drawable.btn_play);
 
-                        // Changing button image to pause button
-                        btnPlay.setImageResource(R.drawable.btn_pause);
+                    // Changing button image to pause button
 
                 }
-                sendMusicControlCmd(cmd);
 
 
             }
@@ -348,10 +359,7 @@ public class OperationActivity extends AppCompatActivity implements Observer {
             @Override
             public void onClick(View arg0) {
                 // check if next song is there or not
-                byte [] cmd = new byte[2];
-                cmd[0] = 0x1; //CONTROLCMD enum in firmwire
-                cmd[1] = 0x5;
-                sendMusicControlCmd(cmd);
+                sendMusicControlCmd(CMD.getCMD_NEXT());
 
 
             }
@@ -365,10 +373,7 @@ public class OperationActivity extends AppCompatActivity implements Observer {
 
             @Override
             public void onClick(View arg0) {
-                byte [] cmd = new byte[2];
-                cmd[0] = 0x1; //CONTROLCMD enum in firmwire
-                cmd[1] = 0x6;
-                sendMusicControlCmd(cmd);
+                sendMusicControlCmd(CMD.getCMD_PREV());
 
             }
         });
@@ -430,9 +435,26 @@ public class OperationActivity extends AppCompatActivity implements Observer {
     }
 
     private void showPlaylist(View view) {
+
+        System.out.println("---> showPlaylist\n");
+        sendMusicControlCmd(CMD.getSDSONGLIST());
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, PlaylistFragment.newInstance(playList), "playList")
                 .commit();
+
+    }
+    @SuppressLint("ResourceType")
+    private void showMapView() {
+
+        System.out.println("---> showMapView\n");
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,new MapFragment())
+                .commit();
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_container, new LoginFragment(), "LoginFragment")
+//                .commit();
+
     }
 
     private long lastClickTime = 0L;
@@ -489,6 +511,26 @@ public class OperationActivity extends AppCompatActivity implements Observer {
         mMenuPopupWindow.show();
     }
 
+    private void setMusicPlayBotton(Byte acion){
+
+        // Changing button image to pause button
+        if(acion == CMD.getCMD_PLAY()[1]){
+            playpuseflag = true;
+            btnPlay.setImageResource(R.drawable.btn_pause);
+
+
+        }
+        else if(acion == CMD.getCMD_POUSE()[1]){
+            playpuseflag = false;
+            btnPlay.setImageResource(R.drawable.btn_play);
+
+        }
+        else{
+            System.out.println("playpuseflag 3   ----->"+Integer.toHexString(acion));
+        }
+
+
+    }
     private void selectMusicSource() {
         final Dialog dialog = new Dialog(OperationActivity.this);
         dialog.setContentView(R.layout.layout_select_source);
@@ -550,47 +592,17 @@ public class OperationActivity extends AppCompatActivity implements Observer {
         }
     };
 
-
-
-    /**
-     * Function to play a song
-     * @param songIndex - index of song
-     * */
-    public void  playSong(int songIndex){
-        // Play song
-        try {
-
-            System.out.println("Displaying Song title");
-            // Displaying Song title
-            String songTitle = "arunjith is good boy";
-            songTitleLabel.setText(songTitle);
-
-            // Changing Button Image to pause image
-//            btnPlay.setImageResource(R.drawable.btn_pause);
-
-            // set Progress bar values
-//            songProgressBar.setProgress(0);
-//            songProgressBar.setMax(100);
-
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     /**
      * send config to the gatts device
      */
     private void send_wifi_config_to_device() {
 
-                String ssid =  wifi_ssid.getText().toString();
-                String passwd =  wifi_password.getText().toString();
-                send_wifi_config_to_device((byte)0x2,ssid.getBytes());
-                send_wifi_config_to_device((byte)0x3,passwd.getBytes());
+        String ssid =  wifi_ssid.getText().toString();
+        String passwd =  wifi_password.getText().toString();
+        send_wifi_config_to_device(CMD.getWIFIUSER(),ssid.getBytes());
+        send_wifi_config_to_device(CMD.getWIFIPASS(),passwd.getBytes());
 
-                System.out.println("###################################### "+ssid+" -- "+ passwd);
+        System.out.println("###################################### "+ssid+" -- "+ passwd);
     }
 
 
@@ -631,13 +643,11 @@ public class OperationActivity extends AppCompatActivity implements Observer {
     ArrayList<String> playList = new ArrayList<>();
     private void getNotification(){
 
-        System.out.println("Notify 11---->: ");
-        System.out.println("Notify 22---->: ");
 
         BleManager.getInstance().notify(
                 bleDevice,
-//                                characteristic.getService().getUuid().toString(),
-//                                characteristic.getUuid().toString(),
+                //  characteristic.getService().getUuid().toString(),
+                //  characteristic.getUuid().toString(),
                 uuid_service,
                 uuid_notify,
                 new BleNotifyCallback() {
@@ -662,30 +672,41 @@ public class OperationActivity extends AppCompatActivity implements Observer {
                     @Override
                     public void onCharacteristicChanged(byte[] data) {
                         String tmp = new String(data);
-                        if(data[0] == PROGRESSBAR) {
+                        if(data[0] == CMD.getPROGRESSBAR()) {
                             float proces1 = Float.valueOf(tmp.substring(1,6));
                             songProgressBar.setProgress((int) proces1);
                         }
-                        else if(data[0] == CMDINITSTATE) {
+                        else if(data[0] == CMD.getCONTROLCMDSTATUS()) {
 
-                            if(data[1] == 0 | data[1] == 0x3 ){
-                                playpuseflag = true;
-                                btnPlay.setImageResource(R.drawable.btn_play);
-                                System.out.println("btnPlay.setImageResource(R.drawable.btn_play)");
+                            System.out.println("------>getCONTROLCMDSTATUS");
 
-                            }else if (data[1] == 0x4){
-                                playpuseflag = false;
-                                btnPlay.setImageResource(R.drawable.btn_pause);
-                                System.out.println("btnPlay.setImageResource(R.drawable.btn_pause)");
-
-
-                            }
-                        }else if (data[0] == 6){
-                            playList.add(new String(data).substring(1));
                         }
+//                        else if(data[0] == CMD.getCMDINITSTATE()) {
+////                            sendMusicControlCmd(CMD.getSDSONGURL());
+//
+//                        }
+                        else if (data[0] == CMD.getSDSONGLIST()[1]){
+                            System.out.println("getSDSONGLIST    -----> "+Integer.toHexString(data[0]));
 
-                        System.out.println("charDisplayRecvData    -----> "+data);
-                        System.out.println("charDisplayRecvData    =====> "+ Arrays.deepToString(playList.toArray()));
+                            playList.add(new String(data).substring(1));
+                            System.out.println("playList 3  =====> "+ Arrays.deepToString(playList.toArray()));
+
+                        }
+                        else if(data[0] == CMD.getSDSONGURL()[1])
+                        {
+
+                            System.out.println("getSDSONGURL    -----> "+data.toString());
+                            CurrentSong.setText(tmp.substring(1));
+                            CurrentSong2.setText(tmp.substring(1));
+
+
+                        }
+                        else if(data[0] == CMD.getCMD_PLAYBUTTON_CURRENT_STATUS()[1]){
+                            setMusicPlayBotton(data[1]);
+                        }
+                        System.out.println("charDisplayRecvData 1   ----->"+tmp);
+                        System.out.println("charDisplayRecvData 2   ----->"+data);
+
                     }
                 }
         );
@@ -824,4 +845,18 @@ public class OperationActivity extends AppCompatActivity implements Observer {
         this.charaProp = charaProp;
     }
 
+    @Override
+    public void sendCommand(String url) {
+
+        byte [] cmd = new byte[2];
+        cmd[0] = CMD.getSDSONGURL()[1]; //CONTROLCMD enum in firmwire for writing the larg string
+//        String url = "Pavitram.mp3";
+        System.out.println("--length --"+url.length());
+        cmd[1] = (byte) url.length();
+        System.out.println("The Value of Byte is: " +cmd[1]);
+        sendMusicControlCmd(cmd);
+        sendMusicControlCmd(url.getBytes());
+
+
+    }
 }

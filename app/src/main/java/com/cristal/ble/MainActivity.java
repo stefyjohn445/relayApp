@@ -4,8 +4,6 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,24 +22,13 @@ import com.clj.fastble.data.BleDevice;
 import com.cristal.ble.ui.LoginFragment;
 import com.cristal.ble.ui.RegisterFragment;
 import com.cristal.ble.ui.ScanFragment;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import org.jetbrains.annotations.NotNull;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
-        EasyPermissions.PermissionCallbacks,
+public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks,
         RegisterFragment.FragmentInteractionListener,
         LoginFragment.FragmentInteractionListener{
 
@@ -92,19 +79,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .setConnectOverTime(20000)
                 .setOperateTimeout(5000);
 
-//        if (AppPreference.preference != null && AppPreference.preference.getLoginResponse() != null) {
-//            scan();
-//        } else {
-//            signin();
-//        }
-
-        mapView();
-    }
-
-    private void mapView() {
-
-        SupportMapFragment mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
-        mapFragment.getMapAsync(this);
+        if (AppPreference.preference != null && AppPreference.preference.getLoginResponse() != null) {
+            scan();
+        } else {
+            signin();
+        }
     }
 
     public void signup() {
@@ -528,76 +507,5 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         }
-    }
-
-    GoogleMap mMap = null;
-
-
-    @Override
-    public void onMapReady(@NonNull @NotNull GoogleMap googleMap) {
-
-        mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(12.9716, 77.5946), 0f));
-
-        for(int i = 0; i<1000 ; i++) {
-            addMarker(getRandomLocation(new LatLng(12.9716, 77.5946), 10000000));
-        }
-    }
-
-    public LatLng getRandomLocation(LatLng point, int radius) {
-
-        List<LatLng> randomPoints = new ArrayList<>();
-        List<Float> randomDistances = new ArrayList<>();
-        Location myLocation = new Location("");
-        myLocation.setLatitude(point.latitude);
-        myLocation.setLongitude(point.longitude);
-
-        //This is to generate 10 random points
-        for(int i = 0; i<10; i++) {
-            double x0 = point.latitude;
-            double y0 = point.longitude;
-
-            Random random = new Random();
-
-            // Convert radius from meters to degrees
-            double radiusInDegrees = radius / 111000f;
-
-            double u = random.nextDouble();
-            double v = random.nextDouble();
-            double w = radiusInDegrees * Math.sqrt(u);
-            double t = 2 * Math.PI * v;
-            double x = w * Math.cos(t);
-            double y = w * Math.sin(t);
-
-            // Adjust the x-coordinate for the shrinking of the east-west distances
-            double new_x = x / Math.cos(y0);
-
-            double foundLatitude = new_x + x0;
-            double foundLongitude = y + y0;
-            LatLng randomLatLng = new LatLng(foundLatitude, foundLongitude);
-            randomPoints.add(randomLatLng);
-            Location l1 = new Location("");
-            l1.setLatitude(randomLatLng.latitude);
-            l1.setLongitude(randomLatLng.longitude);
-            randomDistances.add(l1.distanceTo(myLocation));
-        }
-        //Get nearest point to the centre
-        int indexOfNearestPointToCentre = randomDistances.indexOf(Collections.min(randomDistances));
-        return randomPoints.get(indexOfNearestPointToCentre);
-    }
-
-    private void addMarker(LatLng latLng) {
-
-        // Creating MarkerOptions
-        MarkerOptions options = new MarkerOptions();
-
-        // Setting the position of the marker
-        options.position(latLng);
-        options.anchor(0.5f, 0.5f);
-        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.radio_location));
-
-        // Add new marker to the Google Map Android API V2
-        mMap.addMarker(options);
     }
 }

@@ -133,14 +133,14 @@
         app:layout_constraintTop_toTopOf="@+id/view_other_controls" />
 
     <TextView
+        android:id="@+id/tv_playlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_playlist"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:text="Dream in City"
+        android:text="No Song Selected"
         app:layout_constraintStart_toStartOf="@+id/view_other_controls"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_playlist"/>
     <!-- Repeat Button -->
@@ -187,14 +187,14 @@
         app:layout_constraintTop_toTopOf="@+id/view_player"/>
 
     <TextView
+        android:id="@+id/tv_song"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_song"
         android:textSize="28sp"
         android:textStyle="bold"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:text="All Night"
+        android:text=" "
         app:layout_constraintStart_toStartOf="@+id/view_player"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_song"/>
     <!-- Progress Bar/Seek bar -->
@@ -241,4 +241,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

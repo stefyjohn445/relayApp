@@ -14,7 +14,7 @@ buildscript {
             okhttp: "com.squareup.okhttp3:okhttp:4.9.2",
             logging_interceptor: "com.squareup.okhttp3:logging-interceptor:4.9.2"
     ]
-    
+
     repositories {
         google()
         jcenter()

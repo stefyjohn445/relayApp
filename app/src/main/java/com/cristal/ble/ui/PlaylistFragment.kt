@@ -12,13 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.cristal.ble.R
 import com.cristal.ble.adapter.PlaylistAdapter
+import com.cristal.ble.ui.player.OperationActivity
+
 
 /**
  * A simple [Fragment] subclass.
  * Use the [PlaylistFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PlaylistFragment : Fragment() {
+class PlaylistFragment : Fragment()  {
 
     private lateinit var playlist: java.util.ArrayList<String>
     private val TAG = "MainActivity"
@@ -70,6 +72,11 @@ class PlaylistFragment : Fragment() {
         mPlaylistAdapter?.setOnDeviceClickListener(object : PlaylistAdapter.OnPlaylistClickListener {
             override fun onSelect(song: String?) {
                 // TODO: 26/03/23 play this user selected sone
+                System.out.println("selected song ->> "+song);
+                if (song != null) {
+                    mListener?.sendCommand(song)
+
+                };
             }
         })
         recyclerView.adapter = mPlaylistAdapter
@@ -90,8 +97,7 @@ class PlaylistFragment : Fragment() {
     }
 
     interface FragmentInteractionListener {
-        fun onRegisterSuccess()
-        fun signin()
+        fun sendCommand(url: String)
     }
 
     companion object {

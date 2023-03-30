@@ -85,7 +85,6 @@
 
         </LinearLayout>
 
-        <!-- 用于显示扫描到的BLE设备 -->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/device_swipe_refresh"
             android:layout_width="match_parent"
@@ -107,13 +106,14 @@
             android:id="@+id/fragment_con"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!-- 侧滑菜单 -->
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_gravity="start"
         app:menu="@menu/nav_menu"
         app:headerLayout="@layout/nav_header"/>
@@ -122,15 +122,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragment_container"/>
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_collapseMode="parallax"
-        tools:context="com.vedicpi.development.com.vedicpi.parikrama.development.MapsActivity" />
-
 
 </androidx.drawerlayout.widget.DrawerLayout>
