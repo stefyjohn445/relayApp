@@ -129,4 +129,12 @@ interface APIService {
     fun cloudStream(
         @Body req: CloudStreamRequest?
     ): Call<CloudStreamResponse>
+
+
+
+
+    @POST("/api/app/getwifiradio")
+    fun geoWifiRadio(
+        @Body req: GeoWifiRadioRequst?
+    ): Call<GeoWifiRadioResponse>
 }

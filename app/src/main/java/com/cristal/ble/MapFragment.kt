@@ -1,19 +1,33 @@
 package com.cristal.ble
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.cristal.ble.api.ApiRepository
+import com.cristal.ble.api.GeoWifiRadioResponse
+import android.location.LocationManager
+import com.cristal.ble.ui.LoginFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
+
+
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,13 +43,23 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var currentCircle:Circle? =null
+    var mMap: GoogleMap? = null
+
+
+    // below are the latitude and longitude
+    // of 4 different locations.
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
     override fun onCreateView(
@@ -48,60 +72,85 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mapFragment?.getMapAsync(this)
         return mp;
     }
-    var mMap: GoogleMap? = null
+
+    private fun addMarker(Geoapirespose : GeoWifiRadioResponse) {
+
+        val height = 30
+        val width = 30
+        val b = BitmapFactory.decodeResource(resources,R.drawable.radio_location)
+        val smallMarker = Bitmap.createScaledBitmap(b, width, height, false)
+        val smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker)
 
 
-    fun getRandomLocation(point: LatLng, radius: Int): LatLng {
-        val randomPoints: MutableList<LatLng> = ArrayList()
-        val randomDistances: MutableList<Float> = ArrayList()
-        val myLocation = Location("")
-        myLocation.latitude = point.latitude
-        myLocation.longitude = point.longitude
 
-        //This is to generate 10 random points
-        for (i in 0..9) {
-            val x0 = point.latitude
-            val y0 = point.longitude
-            val random = Random()
+        for (i in Geoapirespose.data.wifiradio!!.indices){
 
-            // Convert radius from meters to degrees
-            val radiusInDegrees = (radius / 111000f).toDouble()
-            val u = random.nextDouble()
-            val v = random.nextDouble()
-            val w = radiusInDegrees * Math.sqrt(u)
-            val t = 2 * Math.PI * v
-            val x = w * Math.cos(t)
-            val y = w * Math.sin(t)
+//            System.out.println("---> GeoWifiRadio 444 "+Geoapirespose.data.wifiradio[i])
+            System.out.println("---> GeoWifiRadio  "+LatLng(Geoapirespose.data.wifiradio[i].coord[0].toDouble(),
+                Geoapirespose.data.wifiradio[i].coord[1].toDouble()
+            ))
 
-            // Adjust the x-coordinate for the shrinking of the east-west distances
-            val new_x = x / Math.cos(y0)
-            val foundLatitude = new_x + x0
-            val foundLongitude = y + y0
-            val randomLatLng = LatLng(foundLatitude, foundLongitude)
-            randomPoints.add(randomLatLng)
-            val l1 = Location("")
-            l1.latitude = randomLatLng.latitude
-            l1.longitude = randomLatLng.longitude
-            randomDistances.add(l1.distanceTo(myLocation))
+            mMap!!.addMarker(
+                MarkerOptions().position(LatLng(Geoapirespose.data.wifiradio[i].coord[0].toDouble(),
+                    Geoapirespose.data.wifiradio[i].coord[1].toDouble()
+                ))
+                    .title("Marker in " + Geoapirespose.data.wifiradio[i].ip).icon(smallMarkerIcon)
+            )
+
+
+
         }
-        //Get nearest point to the centre
-        val indexOfNearestPointToCentre = randomDistances.indexOf(Collections.min(randomDistances))
-        return randomPoints[indexOfNearestPointToCentre]
+
+        //   below line is use to move camera.
+//        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(TamWorth) )
+
+        // adding on click listener to marker of google maps.
+        mMap!!.setOnMarkerClickListener { marker -> // on marker click we are getting the title of our marker
+            // which is clicked and displaying it in a toast message.
+            val markerName = marker.title
+
+            System.out.println("----------------->markerName"+marker.position)
+
+            currentCircle?.remove()
+
+             currentCircle = mMap!!.addCircle(
+                CircleOptions()
+                    .center(marker.position)
+                    .radius(30000.0)
+                    .strokeColor(Color.WHITE)
+
+//                    .fillColor(Color.BLUE)
+            )
+
+
+            false
+        }
     }
 
-    private fun addMarker(latLng: LatLng) {
+    private fun GeoWifiRadio(deviceId: String, userId: String) {
 
-        // Creating MarkerOptions
-        val options = MarkerOptions()
+        ApiRepository.GeoWifiRadio(deviceId, userId, object : Callback<GeoWifiRadioResponse> {
+            override fun onResponse(call: Call<GeoWifiRadioResponse>, response: Response<GeoWifiRadioResponse>) {
 
-        // Setting the position of the marker
-        options.position(latLng)
-        options.anchor(0.5f, 0.5f)
-        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.radio_location))
+                response.body()?.let {
 
-        // Add new marker to the Google Map Android API V2
-        mMap!!.addMarker(options)
+                    System.out.println("---> GeoWifiRadio 3333"+it);
+                    addMarker(it);
+
+
+                } ?: Toast.makeText(context, "get GeoWifiRadio failed", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onFailure(call: Call<GeoWifiRadioResponse>, t: Throwable) {
+
+                System.out.println("---> GeoWifiRadio 444 ERROR" + t);
+
+
+            }
+        })
     }
+
+
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -124,13 +173,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
 
-        System.out.println("->>override fun onMapReady(googleMap: GoogleMap)\n");
+        println("""-login onMapReady ${AppPreference.preference!!.loginResponse}""".trimIndent())
         mMap = googleMap
         mMap!!.mapType = GoogleMap.MAP_TYPE_SATELLITE
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(12.9716, 77.5946), 0f))
-        for (i in 0..999) {
-            addMarker(getRandomLocation(LatLng(12.9716, 77.5946), 10000000))
-        }
+        GeoWifiRadio("amma","amma");
+
+
 
     }
 }

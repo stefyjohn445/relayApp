@@ -22,6 +22,7 @@ import com.clj.fastble.exception.BleException;
 import com.cristal.ble.AppPreference;
 import com.cristal.ble.MainActivity;
 import com.cristal.ble.R;
+import com.cristal.ble.api.LoginResponse;
 import com.cristal.ble.comm.Observer;
 import com.cristal.ble.comm.ObserverManager;
 import com.cristal.ble.operation.CharacteristicListFragment;
@@ -36,9 +37,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import com.google.gson.Gson;
 
-import com.cristal.ble.ui.ScanFragment;
-import com.cristal.ble.ui.player.CommandEnum;
 
 public class OperationActivity extends AppCompatActivity implements Observer,PlaylistFragment.FragmentInteractionListener{
 
@@ -490,6 +490,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,Pla
                         selectMusicSource();
                         break;
                     case R.id.menuAbout:
+
                         Toast.makeText(OperationActivity.this, "menuAbout", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.menuLogout:
@@ -501,6 +502,9 @@ public class OperationActivity extends AppCompatActivity implements Observer,Pla
                     default:
                         break;
                 }
+
+                
+                System.out.println("->>josn"+AppPreference.preference.getLoginResponse().getToken());
 
                 if (mMenuPopupWindow != null && mMenuPopupWindow.isShowing()) {
                     mMenuPopupWindow.dismiss();

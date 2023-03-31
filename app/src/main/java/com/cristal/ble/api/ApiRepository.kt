@@ -53,5 +53,22 @@ class ApiRepository {
             val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
             apiInterface.cloudStream(req = req).enqueue(listener)
         }
+
+        fun GeoWifiRadio(
+            deviceId : String,
+            userId   : String,
+            listener: Callback<GeoWifiRadioResponse>
+        ) {
+
+            val req = GeoWifiRadioRequst(
+
+                deviceId = deviceId,
+                userId = userId
+            )
+
+            val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
+            apiInterface.geoWifiRadio(req = req).enqueue(listener)
+        }
     }
 }
+
