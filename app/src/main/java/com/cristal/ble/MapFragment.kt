@@ -15,6 +15,7 @@ import com.cristal.ble.api.ApiRepository
 import com.cristal.ble.api.GeoWifiRadioResponse
 import android.location.LocationManager
 import com.cristal.ble.ui.LoginFragment
+import com.cristal.ble.ui.PlaylistFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -45,6 +46,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var param2: String? = null
     private var currentCircle:Circle? =null
     var mMap: GoogleMap? = null
+    private var mListener: FragmentInteractionListener? = null
 
 
     // below are the latitude and longitude
@@ -94,7 +96,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 MarkerOptions().position(LatLng(Geoapirespose.data.wifiradio[i].coord[0].toDouble(),
                     Geoapirespose.data.wifiradio[i].coord[1].toDouble()
                 ))
-                    .title("Marker in " + Geoapirespose.data.wifiradio[i].ip).icon(smallMarkerIcon)
+                    .title(Geoapirespose.data.wifiradio[i].ip).icon(smallMarkerIcon)
             )
 
 
@@ -121,6 +123,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
 //                    .fillColor(Color.BLUE)
             )
+            if (markerName != null) {
+                mListener?.sendWifiRadioUrlToDevice(markerName)
+            };
 
 
             false
@@ -180,6 +185,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         GeoWifiRadio("amma","amma");
 
 
-
     }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        if (context is FragmentInteractionListener) {
+            mListener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mListener = null
+    }
+
+    interface FragmentInteractionListener {
+        fun sendWifiRadioUrlToDevice(url: String)
+    }
+
+
 }

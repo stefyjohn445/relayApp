@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.view.*;
 import android.widget.*;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -40,7 +42,8 @@ import java.util.concurrent.TimeUnit;
 import com.google.gson.Gson;
 
 
-public class OperationActivity extends AppCompatActivity implements Observer,PlaylistFragment.FragmentInteractionListener{
+public class OperationActivity extends AppCompatActivity implements Observer,
+        PlaylistFragment.FragmentInteractionListener,MapFragment.FragmentInteractionListener{
 
     private static final String TAG = "OperationActivity";
 
@@ -863,4 +866,20 @@ public class OperationActivity extends AppCompatActivity implements Observer,Pla
 
 
     }
+
+    @Override
+    public void sendWifiRadioUrlToDevice(@NonNull String url) {
+            System.out.println("sendWifiRadioUrlToDevice -> "+url);
+        byte [] cmd = new byte[2];
+        cmd[0] = CMD.getWIFIFMURL(); //CONTROLCMD enum in firmwire for writing the larg string
+//        String url = "Pavitram.mp3";
+        System.out.println("--length --"+url.length());
+        cmd[1] = (byte) url.length();
+        System.out.println("The Value of Byte is: " +cmd[1]);
+        sendMusicControlCmd(cmd);
+        sendMusicControlCmd(url.getBytes());
+
+    }
+
+
 }
