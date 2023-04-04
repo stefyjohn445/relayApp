@@ -10,69 +10,79 @@
         android:layout_height="wrap_content"
         android:id="@+id/tv_title"
         android:textSize="24sp"
-        android:textStyle="bold"
+        android:textStyle="italic"
         android:layout_margin="16dp"
-        android:text="@string/menu_item_select_source"
+        android:text="@string/winfi_config"
         android:alpha="0.9"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView
-        android:layout_width="0dp"
+    <EditText
+        android:layout_width="320dp"
         android:layout_height="40dp"
-        android:id="@+id/bt_wifi_radio"
-        android:textStyle="bold"
+        android:id="@+id/wifi_ssid"
+        android:textStyle="italic"
         android:layout_margin="16dp"
-        android:text="Wi-Fi Radio"
+        android:hint="@string/ssid"
         android:gravity="center"
         android:textColor="@color/colorWhite"
         android:background="@drawable/bg"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_sdcard"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:id="@+id/bt_sdcard"
-        android:textStyle="bold"
-        android:layout_margin="16dp"
-        android:text="Sdcard"
-        android:gravity="center"
-        android:textColor="@color/colorWhite"
-        android:background="@drawable/bg"
-        app:layout_constraintStart_toEndOf="@+id/bt_wifi_radio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
 
-    <TextView
-        android:layout_width="0dp"
+
+    <EditText
+        android:layout_width="320dp"
         android:layout_height="40dp"
-        android:id="@+id/bt_bluetooth"
+        android:id="@+id/wifi_password"
+        android:inputType="textPassword"
         android:textStyle="bold"
         android:layout_margin="16dp"
-        android:text="Bluetooth"
+        android:fontFamily="sans-serif"
+        android:hint="@string/password"
         android:gravity="center"
         android:textColor="@color/colorWhite"
         android:background="@drawable/bg"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_wifi_cloud"
-        app:layout_constraintTop_toBottomOf="@+id/bt_wifi_radio"/>
+        app:layout_constraintTop_toBottomOf="@+id/wifi_ssid"/>
 
-    <TextView
+
+
+    <Button
         android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:id="@+id/bt_wifi_cloud"
+        android:layout_height="wrap_content"
+        android:id="@+id/done"
         android:textStyle="bold"
         android:layout_margin="16dp"
-        android:text="Wi-Fi Cloud"
+        android:fontFamily="sans-serif"
+        android:text="Done"
         android:gravity="center"
         android:textColor="@color/colorWhite"
         android:background="@drawable/bg"
-        app:layout_constraintStart_toEndOf="@+id/bt_bluetooth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_wifi_radio"/>
+        app:layout_constraintStart_toEndOf="@+id/cancel"
+        app:layout_constraintTop_toBottomOf="@+id/wifi_password"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel"
+        android:textStyle="bold"
+        android:layout_margin="16dp"
+        android:fontFamily="sans-serif"
+        android:text="Cancel"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wifi_password"
+        app:layout_constraintEnd_toStartOf="@+id/done"/>
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

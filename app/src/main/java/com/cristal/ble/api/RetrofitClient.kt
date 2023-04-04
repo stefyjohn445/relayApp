@@ -44,4 +44,34 @@ object RetrofitClient {
             .client(client)
             .build()
     }
+
+    fun postClientToken(baseUrl: String?,token: String?): Retrofit {
+        var YOUR_TOKEN = token;
+
+        var retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(OkHttpClient.Builder().addInterceptor { chain ->
+                val request = chain.request().newBuilder().addHeader("authorization", "${YOUR_TOKEN}").build()
+                chain.proceed(request)
+            }.build())
+            .build()
+        return retrofit;
+    }
+
+    fun getClientToken(baseUrl: String?,token: String?): Retrofit {
+        var YOUR_TOKEN = token;
+
+        var retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(OkHttpClient.Builder().addInterceptor { chain ->
+                val request = chain.request().newBuilder().addHeader("authorization", "${YOUR_TOKEN}").build()
+                chain.proceed(request)
+            }.build())
+            .build()
+
+        return retrofit;
+    }
+
 }

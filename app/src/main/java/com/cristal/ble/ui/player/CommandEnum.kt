@@ -39,7 +39,8 @@ class CommandEnum {
     public val CMD_SEND_SRC_SOURS_STATUS = byteArrayOf(CONTROLCMDSTATUS,0xE);
     public val CMD_HET_SONG_FROM_NVS_MEMORY = byteArrayOf(CONTROLCMD,0xF);
     public val CMD_PLAYBUTTON_CURRENT_STATUS = byteArrayOf(CONTROLCMDSTATUS, 0x10);
-
+    public val CMD_NEXT_WIFI_RADIO_URL = byteArrayOf(CONTROLCMD,0x11);
+    public val CMD_SRC_CRISTAL_CLOUD   = byteArrayOf(CONTROLCMD,0x12);
 
 
 

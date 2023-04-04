@@ -57,6 +57,7 @@
     <string name="menu_item_about">About</string>
     <string name="menu_item_logout">Logout</string>
     <string name="play">Play</string>
+    <string name="winfi_config">Wifi Config</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string-array name="decoder">
         <item>Str</item>

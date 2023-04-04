@@ -6,13 +6,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.cristal.ble.AppPreference
 import com.cristal.ble.R
 import com.cristal.ble.adapter.PlaylistAdapter
+import com.cristal.ble.api.ApiRepository
+import com.cristal.ble.api.CristalCloudSongListResponse
+import com.cristal.ble.api.GeoWifiRadioResponse
 import com.cristal.ble.ui.player.OperationActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 /**
@@ -100,6 +108,7 @@ class PlaylistFragment : Fragment()  {
         fun sendCommand(url: String)
     }
 
+
     companion object {
         @JvmStatic
         fun newInstance(playlist: ArrayList<String>) = PlaylistFragment()
@@ -110,4 +119,6 @@ class PlaylistFragment : Fragment()  {
                     }
             }
     }
+
+
 }

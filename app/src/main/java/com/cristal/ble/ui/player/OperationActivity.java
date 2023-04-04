@@ -24,6 +24,7 @@ import com.clj.fastble.exception.BleException;
 import com.cristal.ble.AppPreference;
 import com.cristal.ble.MainActivity;
 import com.cristal.ble.R;
+import com.cristal.ble.api.ApiRepository;
 import com.cristal.ble.api.LoginResponse;
 import com.cristal.ble.comm.Observer;
 import com.cristal.ble.comm.ObserverManager;
@@ -31,6 +32,8 @@ import com.cristal.ble.operation.CharacteristicListFragment;
 import com.cristal.ble.operation.CharacteristicOperationFragment;
 import com.cristal.ble.operation.ServiceListFragment;
 import com.cristal.ble.MapFragment;
+import com.cristal.ble.ui.CloudPlaylistFragment;
+import com.cristal.ble.ui.ColudFragment;
 import com.cristal.ble.ui.LoginFragment;
 import com.cristal.ble.ui.PlaylistFragment;
 import org.jetbrains.annotations.NotNull;
@@ -64,18 +67,13 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
     private MenuItem connectMenuItem;       // Menu in the toolbar
 
-    private Button wificonfigdone;                // send wifi config to the device
-    private Button wificonfigCancel;                // close wifi condif
     private EditText wifi_ssid;           // store ssid
     private EditText wifi_password;       // store password
 
 
     private ImageView btnPlay;
-    //    private ImageButton btnForward;
-//    private ImageButton btnBackward;
     private ImageView btnNext;
     private ImageView btnPrevious;
-    private ImageButton btnPlaylist;
     private ImageButton btnRepeat;
     private ImageButton btnShuffle;
     private SeekBar songProgressBar;
@@ -104,7 +102,6 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //  setContentView(R.layout.activity_operation);
         setContentView(R.layout.fragment_player);
         initplayViw();
         initData();
@@ -113,7 +110,6 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         //  initPage();
         getNotification();
         ObserverManager.getInstance().addObserver(this);
-        //  getSupportFragmentManager().beginTransaction().add(R.id.fragment_con, PlayerUi.newInstance(),"music player").commit();
 
 
     }
@@ -171,93 +167,11 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                     finish();
                 }
                 break;
-            case R.id.action_chat_show_log_item:
-                Toast.makeText(this, "show log", Toast.LENGTH_SHORT).show();
-                break;
 
-            case R.id.action_wifi_config:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                LayoutInflater inflater = getLayoutInflater();
-
-                View view = inflater.inflate(R.layout.dialog_wifi_signin, null);
-                builder.setView(view);
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-
-                wificonfigdone = (Button) view.findViewById(R.id.done);
-                wificonfigCancel = (Button) view.findViewById(R.id.cancel);
-                wifi_ssid = (EditText) view.findViewById(R.id.wifi_ssid);
-                wifi_password = (EditText) view.findViewById(R.id.wifi_password);
-                Toast.makeText(this, "wifi config pressed", Toast.LENGTH_SHORT).show();
-                wificonfigdone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        send_wifi_config_to_device();
-                        alertDialog.cancel();
-                    }
-                });
-                wificonfigCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        alertDialog.cancel();
-                    }
-                });
-
-                break;
-            case R.id.action_source_selection:
-                System.out.println( "from source selector");
-                AlertDialog.Builder src_builder = new AlertDialog.Builder(this);
-
-                LayoutInflater src_inflater = getLayoutInflater();
-                View src_view = src_inflater.inflate(R.layout.sourse_selector, null);
-                src_builder.setView(src_view);
-//                final AlertDialog src_alertDialog = src_builder.create();
-                src_alertDialog = src_builder.create();
-
-                src_alertDialog.show();
-
-                break;
             default:
                 break;
         }
         return true;
-    }
-
-    public void onRadioButtonClicked(int id) {
-
-        // Check which radio button was clicked
-        switch(id) {
-            case R.id.bt_wifi:
-
-                sendMusicControlCmd(CMD.getCMD_SRC_WIFI());
-
-                // wifi are the best
-                System.out.println("########### radio_wifi");
-                break;
-            case R.id.bt_sdcard:
-
-                // sd card rule
-                System.out.println("########### radio_sdcard");
-                sendMusicControlCmd(CMD.getCMD_SRC_SD());
-
-                break;
-            case R.id.bt_bluetooth:
-                // bluetooth rule
-                System.out.println("########### radio_blutooth");
-                sendMusicControlCmd(CMD.getCMD_SRC_BLUTOOTH_STREAM());
-                break;
-
-            case R.id.bt_wifi_cloud:
-                // sd card rule
-                System.out.println("########### radio_sdcard");
-//                    sendMusicControlCmd(CMD.getCMD_SRC_WIFI_FM());
-//                sendMusicControlCmd(CMD.getSDSONGURL());
-                showMapView();
-
-
-
-                break;
-        }
     }
 
 
@@ -266,18 +180,12 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
         // All player buttons
 
-
-
         btnPlay = (ImageView) findViewById(R.id.btnPlay);
-//      btnForward = (ImageButton) findViewById(R.id.btnForward);
-//      btnBackward = (ImageButton) findViewById(R.id.btnBackward);
         btnNext = (ImageView) findViewById(R.id.btnNext);
         btnPrevious = (ImageView) findViewById(R.id.btnPrevious);
-        btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
         btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
         btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
         songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
-//      songTitleLabel = (TextView) findViewById(R.id.songTitle);
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
         CurrentSong = (TextView) findViewById(R.id.tv_playlist);
@@ -296,7 +204,6 @@ public class OperationActivity extends AppCompatActivity implements Observer,
          * pauses a song and changes button to play image
          * */
 
-//        songTitleLabel.setText("amma");
         sendMusicControlCmd(CMD.getCMD_PLAYBUTTON_CURRENT_STATUS());
 
 
@@ -331,8 +238,6 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             public void onClick(View arg0) {
 
                 // check for already playing
-
-//                System.out.println(btnPlay.);
 
                 if(!playpuseflag){
                     // Changing button image to play button
@@ -381,60 +286,22 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             }
         });
 
-        /**
-         * Forward button click event
-         * Forwards song specified seconds
-         * */
-
-//        btnForward.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if (event.getActionMasked() == MotionEvent.ACTION_DOWN){
-//                    System.out.println( "you just touch the screen down :-)"+ Toast.LENGTH_SHORT);
-//                    System.out.println(Toast.LENGTH_SHORT);
-//
-//
-//                }
-//                if (event.getActionMasked() == MotionEvent.ACTION_UP){
-//                    System.out.println( "you just touch the screen up :-)"+ Toast.LENGTH_SHORT);
-//                    System.out.println(Toast.LENGTH_SHORT);
-//
-//                }
-//                System.out.println("btnForward  --------->");
-//
-//                return false;
-//            }
-//
-//
-//        });
+    }
 
 
-        /**
-         * Backward button click event
-         * Backward song to specified seconds
-         * */
-//        btnBackward.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if (event.getActionMasked() == MotionEvent.ACTION_DOWN){
-//                    System.out.println( "you just touch the screen down :-)"+ Toast.LENGTH_SHORT);
-//                    System.out.println(Toast.LENGTH_SHORT);
-//
-//
-//                }
-//                if (event.getActionMasked() == MotionEvent.ACTION_UP){
-//                    System.out.println( "you just touch the screen up :-)"+ Toast.LENGTH_SHORT);
-//                    System.out.println(Toast.LENGTH_SHORT);
-//
-//                }
-//                System.out.println("btnForward  --------->");
-//
-//                return false;
-//            }
-//
-//
-//        });
 
+    private void showCloud(){
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, ColudFragment.newInstance("",""), "cloud")
+                .commit();
+
+    }
+
+    private void showcloudplaylist(){
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, CloudPlaylistFragment.newInstance("",""), "cloud")
+                .commit();
     }
 
     private void showPlaylist(View view) {
@@ -462,6 +329,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
     private long lastClickTime = 0L;
 
+
     public void showMenu(View view) {
 
         if (SystemClock.elapsedRealtime() - lastClickTime < TimeUnit.SECONDS.toMillis(1)) {
@@ -482,18 +350,19 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                 lastClickTime = 0;
             }
 
+            @SuppressLint("NonConstantResourceId")
             @Override
             public void onClick(@NotNull View view) {
                 switch (view.getId()) {
                     case R.id.menuWifiConfig:
                         Toast.makeText(OperationActivity.this, "menuWifiConfig", Toast.LENGTH_SHORT).show();
+                        wifiConfig();
                         break;
                     case R.id.menuSelectSource:
                         Toast.makeText(OperationActivity.this, "please select music source", Toast.LENGTH_SHORT).show();
                         selectMusicSource();
                         break;
                     case R.id.menuAbout:
-
                         Toast.makeText(OperationActivity.this, "menuAbout", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.menuLogout:
@@ -538,31 +407,58 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
 
     }
+
+    private void wifiConfig() {
+        final Dialog dialog = new Dialog(OperationActivity.this);
+        dialog.setContentView(R.layout.wifi_config);
+        wifi_ssid = (EditText) dialog.findViewById(R.id.wifi_ssid);
+        wifi_password = (EditText) dialog.findViewById(R.id.wifi_password);
+        dialog.findViewById(R.id.done).setOnClickListener(v -> {
+            System.out.println("wifi config\n");
+
+            if(get_wifi_config_to_device())
+                dialog.dismiss();
+            else{
+                Toast.makeText(this, "please enter the ssid and password", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        dialog.findViewById(R.id.cancel).setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
+
+    }
     private void selectMusicSource() {
         final Dialog dialog = new Dialog(OperationActivity.this);
         dialog.setContentView(R.layout.layout_select_source);
 
-        dialog.findViewById(R.id.bt_wifi).setOnClickListener(v -> {
-            onRadioButtonClicked(R.id.bt_wifi);
+        dialog.findViewById(R.id.bt_wifi_radio).setOnClickListener(v -> {
             playList = new ArrayList<>();
+            showMapView();
+
             dialog.dismiss();
         });
 
         dialog.findViewById(R.id.bt_sdcard).setOnClickListener(v -> {
-            onRadioButtonClicked(R.id.bt_sdcard);
+            sendMusicControlCmd(CMD.getCMD_SRC_SD());
             playList = new ArrayList<>();
             dialog.dismiss();
         });
 
         dialog.findViewById(R.id.bt_bluetooth).setOnClickListener(v -> {
-            onRadioButtonClicked(R.id.bt_bluetooth);
+            sendMusicControlCmd(CMD.getCMD_SRC_BLUTOOTH_STREAM());
             playList = new ArrayList<>();
             dialog.dismiss();
         });
 
         dialog.findViewById(R.id.bt_wifi_cloud).setOnClickListener(v -> {
-            onRadioButtonClicked(R.id.bt_wifi_cloud);
             playList = new ArrayList<>();
+            sendMusicControlCmd(CMD.getCMD_SRC_CRISTAL_CLOUD());
+//          showCloud();
+//          showcloudplaylist();
+
             dialog.dismiss();
         });
 
@@ -602,14 +498,19 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     /**
      * send config to the gatts device
      */
-    private void send_wifi_config_to_device() {
+    private boolean get_wifi_config_to_device() {
 
         String ssid =  wifi_ssid.getText().toString();
         String passwd =  wifi_password.getText().toString();
-        send_wifi_config_to_device(CMD.getWIFIUSER(),ssid.getBytes());
-        send_wifi_config_to_device(CMD.getWIFIPASS(),passwd.getBytes());
-
-        System.out.println("###################################### "+ssid+" -- "+ passwd);
+        if(ssid.length()>2 && passwd.length()>2) {
+            send_wifi_config_to_device(CMD.getWIFIUSER(), ssid.getBytes());
+            send_wifi_config_to_device(CMD.getWIFIPASS(), passwd.getBytes());
+            System.out.println("###################################### "+ssid.length()+"->"+ssid+" -- "+passwd.length()+"-->"+ passwd);
+            return true;
+        }else{
+            System.out.println("Please enter the password and  ssid");
+            return false;
+        }
     }
 
 
@@ -625,6 +526,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         final byte[] tag_LEN = new byte[2];
         tag_LEN[0] = action;
         tag_LEN[1] = (byte) sendMsg.length;
+        System.out.println("----->sendMsg.length "+sendMsg.length);
         final byte[] sendMsg_L = concatenateByteArrays(tag_LEN,sendMsg);
 
         BleManager.getInstance().write(
@@ -689,7 +591,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
                         }
 //                        else if(data[0] == CMD.getCMDINITSTATE()) {
-////                            sendMusicControlCmd(CMD.getSDSONGURL());
+//                           sendMusicControlCmd(CMD.getSDSONGURL());
 //
 //                        }
                         else if (data[0] == CMD.getSDSONGLIST()[1]){
@@ -769,10 +671,6 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         }
     }
 
-    private void initPage() {
-        prepareFragment();
-        changePage(SERVICE_LIST_PAGE);
-    }
 
     public void changePage(int page) {
         currentPage = page;
@@ -790,21 +688,6 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             default:
                 break;
         }
-    }
-
-    private void prepareFragment() {
-        fragmentList.add(new ServiceListFragment());
-        fragmentList.add(new CharacteristicListFragment());
-        fragmentList.add(new CharacteristicOperationFragment());
-
-        for (Fragment fragment : fragmentList) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment, fragment)
-                    .hide(fragment)
-                    .commit();
-        }
-
     }
 
     private void updateFragment(int position) {
@@ -879,6 +762,19 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         sendMusicControlCmd(cmd);
         sendMusicControlCmd(url.getBytes());
 
+    }
+
+    @Override
+    public void onBackPressed(){
+        System.out.println("--> onBackPressed");
+//        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+//        if (f instanceof MapFragment) {
+//            Toast.makeText(OperationActivity.this, "Pressed map-fragment", Toast.LENGTH_LONG).show();
+//            super.onBackPressed();
+//        } else if (f instanceof PlaylistFragment) {
+//            super.onBackPressed();
+//            Toast.makeText(OperationActivity.this, "Pressed playlist", Toast.LENGTH_LONG).show();
+//        }
     }
 
 

@@ -79,7 +79,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         val height = 30
         val width = 30
-        val b = BitmapFactory.decodeResource(resources,R.drawable.radio_location)
+//        val b = BitmapFactory.decodeResource(resources,R.drawable.radio_location)
+        val b = BitmapFactory.decodeResource(resources,R.drawable.green_dot)
+
         val smallMarker = Bitmap.createScaledBitmap(b, width, height, false)
         val smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker)
 
@@ -104,7 +106,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         //   below line is use to move camera.
-//        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(TamWorth) )
+        //  mMap!!.moveCamera(CameraUpdateFactory.newLatLng(TamWorth) )
 
         // adding on click listener to marker of google maps.
         mMap!!.setOnMarkerClickListener { marker -> // on marker click we are getting the title of our marker
@@ -119,6 +121,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 CircleOptions()
                     .center(marker.position)
                     .radius(30000.0)
+                    .strokeWidth(2F)
                     .strokeColor(Color.WHITE)
 
 //                    .fillColor(Color.BLUE)
@@ -132,9 +135,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun GeoWifiRadio(deviceId: String, userId: String) {
+    private fun GeoWifiRadio(deviceId: String, userId: String,userToken:String) {
 
-        ApiRepository.GeoWifiRadio(deviceId, userId, object : Callback<GeoWifiRadioResponse> {
+        System.out.println("---> GeoWifiRadio 444"+userToken);
+
+        ApiRepository.GeoWifiRadio(deviceId, userId,userToken, object : Callback<GeoWifiRadioResponse> {
             override fun onResponse(call: Call<GeoWifiRadioResponse>, response: Response<GeoWifiRadioResponse>) {
 
                 response.body()?.let {
@@ -182,7 +187,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mMap = googleMap
         mMap!!.mapType = GoogleMap.MAP_TYPE_SATELLITE
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(12.9716, 77.5946), 0f))
-        GeoWifiRadio("amma","amma");
+        AppPreference.preference!!.loginResponse?.let { GeoWifiRadio("amma","amma", it.token) };
 
 
     }

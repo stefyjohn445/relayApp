@@ -1,5 +1,6 @@
 package com.cristal.ble.api
 
+import android.media.session.MediaSession.Token
 import retrofit2.Callback
 
 
@@ -54,21 +55,48 @@ class ApiRepository {
             apiInterface.cloudStream(req = req).enqueue(listener)
         }
 
+        fun CristalCloudSongList(
+            deviceId : String,
+            userId   : String,
+            userToken: String,
+            start:Int,
+            end:Int,
+            listener: Callback<CristalCloudSongListResponse>
+        ) {
+
+            val req = CristalCloudSongListRequst(
+
+                 deviceId =deviceId,
+                 userId = userId,
+                 start = start,
+                 end = end
+            )
+
+            val apiInterface: APIService = RetrofitClient.postClientToken(RetrofitClient.url,userToken).create(APIService::class.java)
+            apiInterface.getcristalcloudsonglist(req = req).enqueue(listener)
+        }
+
         fun GeoWifiRadio(
             deviceId : String,
             userId   : String,
+            userToken: String,
             listener: Callback<GeoWifiRadioResponse>
         ) {
 
             val req = GeoWifiRadioRequst(
 
                 deviceId = deviceId,
-                userId = userId
-            )
+                userId = userId,
 
-            val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
+            )
+//            with out toket
+//            val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
+
+            val apiInterface: APIService = RetrofitClient.postClientToken(RetrofitClient.url,userToken).create(APIService::class.java)
             apiInterface.geoWifiRadio(req = req).enqueue(listener)
         }
+
+
     }
 }
 
