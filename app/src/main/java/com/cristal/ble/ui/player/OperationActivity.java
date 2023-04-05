@@ -36,6 +36,7 @@ import com.cristal.ble.operation.CharacteristicOperationFragment;
 import com.cristal.ble.ui.CloudPlaylistFragment;
 import com.cristal.ble.ui.ColudFragment;
 import com.cristal.ble.ui.PlaylistFragment;
+import com.cristal.ble.ui.imageList.ImageItemFragment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -321,6 +322,17 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                 .commit();
 
     }
+
+    private void showImageList() {
+
+        System.out.println("---> showImageList\n");
+        sendMusicControlCmd(CMD.getSDSONGLIST());
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, ImageItemFragment.newInstance(2), "ImageItemFragment")
+                .addToBackStack("ImageItemFragment")
+                .commit();
+
+    }
     @SuppressLint("ResourceType")
     private void showMapView() {
 
@@ -374,6 +386,8 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                     case R.id.menuAbout:
                         sendCriatalcloudUrl("192.168.29.220:3001");
                         Toast.makeText(OperationActivity.this, "menuAbout", Toast.LENGTH_SHORT).show();
+
+                        showImageList();
                         break;
                     case R.id.menuLogout:
                         AppPreference.preference.logout();
