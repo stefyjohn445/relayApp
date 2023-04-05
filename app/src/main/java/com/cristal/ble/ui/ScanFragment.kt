@@ -75,7 +75,7 @@ class ScanFragment : Fragment() {
             bleStartScan()
             System.out.println("--> swipeRefreshLayout.setOnRefreshListener")
             //  for cancelling the scan
-            BleManager.getInstance().cancelScan()
+        //  BleManager.getInstance().cancelScan()
         })
 
 
@@ -247,7 +247,7 @@ class ScanFragment : Fragment() {
                 if (bleDevice.name != null && bleDevice.name.contains("CRISTAL")) {
                     println("this is from manin --> " + bleDevice.name)
                     mDeviceAdapter?.addDevice(bleDevice)
-                    mDeviceAdapter?.notifyDataSetChanged()
+//                    mDeviceAdapter?.notifyDataSetChanged()
                 }
             }
 

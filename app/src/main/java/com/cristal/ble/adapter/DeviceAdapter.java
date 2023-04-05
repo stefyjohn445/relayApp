@@ -113,6 +113,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     public void addDevice(BleDevice bleDevice) {
         removeDevice(bleDevice);
         mBleDeviceList.add(bleDevice);
+        notifyDataSetChanged();
     }
 
     public void removeDevice(BleDevice bleDevice) {
@@ -145,6 +146,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     public void clear() {
         clearConnectedDevice();
         clearScanDevice();
+        notifyDataSetChanged();
     }
 
     public interface OnDeviceClickListener {
