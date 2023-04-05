@@ -28,7 +28,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.cristal.ble.ui.player.OperationActivity" />
+        <activity android:name="com.cristal.ble.ui.player.OperationActivity"
+            android:screenOrientation="portrait"/>
 
 
         <meta-data
