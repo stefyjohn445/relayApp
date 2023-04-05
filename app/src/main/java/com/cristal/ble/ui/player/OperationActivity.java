@@ -610,6 +610,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                             playList.add(new String(data).substring(1));
                             System.out.println("playList 3  =====> "+ Arrays.deepToString(playList.toArray()));
 
+                            ((PlaylistFragment) getSupportFragmentManager().findFragmentByTag("playList")).update(playList);
                         }
                         else if(data[0] == CMD.getSDSONGURL()[1])
                         {

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.clj.fastble.BleManager;
 import com.clj.fastble.data.BleDevice;
 import com.cristal.ble.R;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,11 @@ import java.util.List;
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder>{
 
     private ArrayList<String> mBleDeviceList;
+
+    public void update(@NotNull ArrayList<String> playList) {
+        mBleDeviceList = playList;
+        notifyDataSetChanged();
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
