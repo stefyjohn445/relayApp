@@ -377,16 +377,13 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                         break;
                     case R.id.menuLogout:
                         AppPreference.preference.logout();
-                        startActivity(new Intent(OperationActivity.this, MainActivity.class));
+//                        startActivity(new Intent(OperationActivity.this, MainActivity.class));
                         OperationActivity.this.finish();
                         Toast.makeText(OperationActivity.this, "User logged out", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
                 }
-
-                
-                System.out.println("->>josn"+AppPreference.preference.getLoginResponse().getToken());
 
                 if (mMenuPopupWindow != null && mMenuPopupWindow.isShowing()) {
                     mMenuPopupWindow.dismiss();

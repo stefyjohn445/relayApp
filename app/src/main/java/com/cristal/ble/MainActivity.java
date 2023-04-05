@@ -79,12 +79,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 .setReConnectCount(1, 5000)
                 .setConnectOverTime(20000)
                 .setOperateTimeout(5000);
-
-        if (AppPreference.preference != null && AppPreference.preference.getLoginResponse() != null) {
-            scan();
-        } else {
-            signin();
-        }
     }
 
     public void signup() {
@@ -115,6 +109,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         super.onResume();
 
 //        showConnectedDevice();
+
+        if (AppPreference.preference != null && AppPreference.preference.getLoginResponse() != null) {
+            scan();
+        } else {
+            signin();
+        }
     }
 
     @Override
