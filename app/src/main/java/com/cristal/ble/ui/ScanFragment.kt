@@ -412,9 +412,13 @@ class ScanFragment : Fragment() {
                 mDeviceAdapter!!.removeDevice(bleDevice)
                 mDeviceAdapter!!.notifyDataSetChanged()
                 if (isActiveDisConnected) {
-                    Toast.makeText(context, "You disconnect BLE", Toast.LENGTH_SHORT).show()
+                    context?.let {
+                        Toast.makeText(context, "You disconnect BLE", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
-                    Toast.makeText(context, "BLE was disconnected", Toast.LENGTH_SHORT).show()
+                    context?.let {
+                        Toast.makeText(context, "BLE was disconnected", Toast.LENGTH_SHORT).show()
+                    }
                     ObserverManager.getInstance().notifyObserver(bleDevice)
                 }
             }

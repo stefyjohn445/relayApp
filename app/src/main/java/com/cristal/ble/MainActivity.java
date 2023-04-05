@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -291,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         //
         //Check if the permission has been obtained
         if (EasyPermissions.hasPermissions(this, perms)) {
-            Toast.makeText(this, "App has obtained the required permissions", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "App has obtained the required permissions", Toast.LENGTH_SHORT).show();
         } else {
             EasyPermissions.requestPermissions(this, "You should agree all the needed permissions if you want to use this App.",
                     0, perms);
@@ -506,6 +507,23 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
                 }
             }
+        }
+    }
+
+    boolean doubleTapToExit = false;
+    Handler doubleTapToExitHandler = null;
+
+    @Override
+    public void onBackPressed() {
+
+        if (doubleTapToExit) {
+            MainActivity.this.finish();
+        } else {
+            Toast.makeText(MainActivity.this, "Press again to exit", Toast.LENGTH_LONG).show();
+            doubleTapToExit = true;
+            doubleTapToExitHandler.postDelayed(() -> {
+                doubleTapToExit = false;
+            }, 2000);
         }
     }
 }

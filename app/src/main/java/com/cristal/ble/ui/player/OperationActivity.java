@@ -8,9 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.*;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,18 +24,14 @@ import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.cristal.ble.AppPreference;
 import com.cristal.ble.MainActivity;
+import com.cristal.ble.MapFragment;
 import com.cristal.ble.R;
-import com.cristal.ble.api.ApiRepository;
-import com.cristal.ble.api.LoginResponse;
 import com.cristal.ble.comm.Observer;
 import com.cristal.ble.comm.ObserverManager;
 import com.cristal.ble.operation.CharacteristicListFragment;
 import com.cristal.ble.operation.CharacteristicOperationFragment;
-import com.cristal.ble.operation.ServiceListFragment;
-import com.cristal.ble.MapFragment;
 import com.cristal.ble.ui.CloudPlaylistFragment;
 import com.cristal.ble.ui.ColudFragment;
-import com.cristal.ble.ui.LoginFragment;
 import com.cristal.ble.ui.PlaylistFragment;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import com.google.gson.Gson;
 
 
 public class OperationActivity extends AppCompatActivity implements Observer,
@@ -136,20 +132,21 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (currentPage != SERVICE_LIST_PAGE) {
-                currentPage--;
-                changePage(currentPage);
-                return true;
-            } else {
-                finish();
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            if (currentPage != SERVICE_LIST_PAGE) {
+//                currentPage--;
+//                changePage(currentPage);
+//                return true;
+//            } else {
+////                finish();
+//                Toast.makeText(this,"onBackPressed",Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -310,6 +307,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         sendMusicControlCmd(CMD.getSDSONGLIST());
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, PlaylistFragment.newInstance(playList), "playList")
+                .addToBackStack("playList")
                 .commit();
 
     }
@@ -319,7 +317,8 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         System.out.println("---> showMapView\n");
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container,new MapFragment())
+                .replace(R.id.fragment_container,new MapFragment(), "MapFragment")
+                .addToBackStack("MapFragment")
                 .commit();
 //        getSupportFragmentManager().beginTransaction()
 //                .replace(R.id.fragment_container, new LoginFragment(), "LoginFragment")
@@ -777,18 +776,28 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
     }
 
+    boolean doubleTapToExit = false;
+    Handler doubleTapToExitHandler = null;
+
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         System.out.println("--> onBackPressed");
-//        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-//        if (f instanceof MapFragment) {
-//            Toast.makeText(OperationActivity.this, "Pressed map-fragment", Toast.LENGTH_LONG).show();
-//            super.onBackPressed();
-//        } else if (f instanceof PlaylistFragment) {
-//            super.onBackPressed();
-//            Toast.makeText(OperationActivity.this, "Pressed playlist", Toast.LENGTH_LONG).show();
-//        }
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (f instanceof MapFragment) {
+            super.onBackPressed();
+        } else if (f instanceof PlaylistFragment) {
+            super.onBackPressed();
+        } else {
+
+            if (doubleTapToExit) {
+                OperationActivity.this.finish();
+            } else {
+                Toast.makeText(OperationActivity.this, "Press again to exit", Toast.LENGTH_LONG).show();
+                doubleTapToExit = true;
+                doubleTapToExitHandler.postDelayed(() -> {
+                    doubleTapToExit = false;
+                }, 2000);
+            }
+        }
     }
-
-
 }
