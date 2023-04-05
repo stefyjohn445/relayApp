@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -99,8 +98,21 @@ class ScanFragment : Fragment() {
         })
         recyclerView.adapter = mDeviceAdapter
 
-        bleSetScanRule();
-        bleStartScan();
+//        bleSetScanRule();
+//        bleStartScan();
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        bleDeviceList.clear()
+        mDeviceAdapter?.clear()
+
+        bleSetScanRule()
+        bleStartScan()
+        System.out.println("--> swipeRefreshLayout.setOnRefreshListener")
+        //  for cancelling the scan
+        //  BleManager.getInstance().cancelScan()
     }
 
     /**
