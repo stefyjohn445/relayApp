@@ -198,7 +198,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 //        }
 //        navView.setCheckedItem(R.id.nav_setting);
 //        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            // 侧滑菜单的菜单项选择事件处理
 //            @Override
 //            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 //
@@ -504,6 +503,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     ScanFragment scanFragment = (ScanFragment) scanFragment1;
                     scanFragment.bleSetScanRule();
                     scanFragment.bleStartScan();
+
                 }
             }
         }

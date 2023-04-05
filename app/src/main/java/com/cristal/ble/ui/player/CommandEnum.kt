@@ -2,7 +2,8 @@ package com.cristal.ble.ui.player
 
 class CommandEnum {
 
-
+    private val http :String   = "http://";
+    private val suburl:String = "/P?devid=abcd&flag=1&NP=>";
 
     public val ERROR: Byte = 0x0;
     public val CONTROLCMD:Byte = 0x1;
@@ -43,5 +44,10 @@ class CommandEnum {
     public val CMD_SRC_CRISTAL_CLOUD   = byteArrayOf(CONTROLCMD,0x12);
 
 
+    fun buildCristalCloudUrl(srcip:String ): String {
+
+        return http+srcip+suburl;
+
+    }
 
 }

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -26,6 +27,7 @@ import com.cristal.ble.adapter.DeviceAdapter
 import com.cristal.ble.adapter.DeviceAdapter.OnDeviceClickListener
 import com.cristal.ble.comm.ObserverManager
 import com.cristal.ble.ui.player.OperationActivity
+
 
 /**
  * A simple [Fragment] subclass.
@@ -65,9 +67,13 @@ class ScanFragment : Fragment() {
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         swipeRefreshLayout.setVisibility(View.VISIBLE)
         swipeRefreshLayout.setOnRefreshListener(OnRefreshListener { //Pull down to refresh to achieve BLE scanning function
+
+            bleDeviceList.clear()
+            mDeviceAdapter?.clear()
+
             bleSetScanRule()
             bleStartScan()
-
+            System.out.println("--> swipeRefreshLayout.setOnRefreshListener")
             //  for cancelling the scan
             BleManager.getInstance().cancelScan()
         })

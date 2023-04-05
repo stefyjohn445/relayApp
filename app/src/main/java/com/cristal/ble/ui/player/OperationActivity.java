@@ -363,6 +363,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                         selectMusicSource();
                         break;
                     case R.id.menuAbout:
+                        sendCriatalcloudUrl("192.168.29.220:3001");
                         Toast.makeText(OperationActivity.this, "menuAbout", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.menuLogout:
@@ -750,6 +751,18 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
     }
 
+    private  void sendCriatalcloudUrl(String srcip){
+        byte [] cmd = new byte[2];
+        cmd[0] = CMD.getCRISTALCLOUDURL(); //CONTROLCMD enum in firmwire for writing the larg string
+        String url = new String(CMD.buildCristalCloudUrl(srcip));
+        cmd[1] = (byte) url.length();
+        System.out.println("The Value of Byte is: " +cmd[1]);
+
+        sendMusicControlCmd(cmd);
+        sendMusicControlCmd(url.getBytes());
+        System.out.println("fullurl --->"+ url);
+
+    }
     @Override
     public void sendWifiRadioUrlToDevice(@NonNull String url) {
             System.out.println("sendWifiRadioUrlToDevice -> "+url);
