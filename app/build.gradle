@@ -46,4 +46,7 @@ dependencies {
 
     implementation okhttp.okhttp
     implementation okhttp.logging_interceptor
+
+    implementation glide.glide
+    annotationProcessor glide.glide_compiler
 }
