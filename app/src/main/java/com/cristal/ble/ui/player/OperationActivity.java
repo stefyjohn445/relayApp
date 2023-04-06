@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothGattService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Base64;
 import android.view.Menu;
@@ -456,10 +457,10 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                     case R.id.menuAbout:
 //                        sendCriatalcloudUrl("192.168.0.114:3001");
                         Toast.makeText(OperationActivity.this, "menuAbout", Toast.LENGTH_SHORT).show();
-//                        showImageList();
+                        showImageList();
 //                        imaget.getCristalCloudImages();
 //                        showSongImage();
-                        getcurrentruningsong();
+//                        getcurrentruningsong();
 
                         break;
                     case R.id.menuLogout:
@@ -914,6 +915,8 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             super.onBackPressed();
         } else if (f instanceof PlaylistFragment) {
             super.onBackPressed();
+        } else if (f instanceof ImageItemFragment) {
+            super.onBackPressed();
         } else {
 
             if (doubleTapToExit) {
@@ -921,6 +924,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             } else {
                 Toast.makeText(OperationActivity.this, "Press again to exit", Toast.LENGTH_LONG).show();
                 doubleTapToExit = true;
+                if (doubleTapToExitHandler == null) doubleTapToExitHandler = new Handler(Looper.getMainLooper());
                 doubleTapToExitHandler.postDelayed(() -> {
                     doubleTapToExit = false;
                 }, 2000);

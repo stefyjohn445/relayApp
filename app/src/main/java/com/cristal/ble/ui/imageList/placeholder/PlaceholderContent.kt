@@ -1,11 +1,8 @@
 package com.cristal.ble.ui.imageList.placeholder
 
-import android.util.Base64
 import com.cristal.ble.api.ApiRepository
 import com.cristal.ble.api.CristalaudioBookResponce
-import com.cristal.ble.api.cristalcloudImgResponce
-import java.util.ArrayList
-import java.util.HashMap
+import com.cristal.ble.api.audiobook
 
 /**
  * Helper class for providing sample content for user interfaces created by
@@ -18,12 +15,12 @@ object PlaceholderContent {
     /**
      * An array of sample (placeholder) items.
      */
-    val ITEMS: MutableList<PlaceholderItem> = ArrayList()
+    var ITEMS: MutableList<audiobook> = ArrayList()
 
     /**
      * A map of sample (placeholder) items, by ID.
      */
-    val ITEM_MAP: MutableMap<String, PlaceholderItem> = HashMap()
+    val ITEM_MAP: MutableMap<Int, audiobook> = HashMap()
 
     private val COUNT = 10
 
@@ -37,13 +34,13 @@ object PlaceholderContent {
     }
 
 
-    private fun addItem(item: PlaceholderItem) {
+    private fun addItem(item: audiobook) {
         ITEMS.add(item)
-        ITEM_MAP.put(item.id, item)
+        ITEM_MAP.put(item.bookId, item)
     }
 
-    private fun createPlaceholderItem(position: Int,bookname: String): PlaceholderItem {
-        return PlaceholderItem(position.toString(),bookname, makeDetails(position))
+    private fun createPlaceholderItem(bookId: Int,audioIds: Array<Int>, book_name: String,img: String): audiobook {
+        return audiobook(bookId, audioIds, book_name, img)
     }
 
     private fun makeDetails(position: Int): String {
@@ -55,17 +52,18 @@ object PlaceholderContent {
         return builder.toString()
     }
 
-    /**
-     * A placeholder item representing a piece of content.
-     */
-    data class PlaceholderItem(val id: String, val content: String, val details: String) {
-        override fun toString(): String = content
+    interface GetItemListener {
+        fun onUpdate(ITEMS: MutableList<audiobook>)
     }
 
 
     public fun getCristalCloudImages(){
 
+    }
 
+    fun getItems(getItemListener: GetItemListener) {
+
+        ITEMS = ArrayList()
 
         System.out.println("---> getCristalCloudImages");
         ApiRepository.getcristalaudiobooks( "userId","userToken", object :
@@ -78,9 +76,17 @@ object PlaceholderContent {
                     if(it.success) {
                         it.data.forEachIndexed { index, element ->
                             System.out.println("---> getCristalCloudImages: "+ index +" - "+element.book_name);
-//                            addItem(createPlaceholderItem(index, element.book_name))
+                            addItem(
+                                createPlaceholderItem(
+                                    element.bookId,
+                                    element.audioIds,
+                                    element.book_name,
+                                    element.img
+                                ))
                         }
                     }
+
+                    getItemListener.onUpdate(ITEMS)
                 } ?: System.out.println("---> get GeoWifiRadio failed");
             }
 
@@ -92,7 +98,6 @@ object PlaceholderContent {
             }
         })
         System.out.println("---> getCristalCloudImages end");
-
     }
 
 }

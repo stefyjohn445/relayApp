@@ -3,6 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:paddingBottom="16dp">
 
@@ -11,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:src="@drawable/song_logo"
+        tools:src="@drawable/song_logo"
         android:background="#2a2a2a2a"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
@@ -22,17 +23,16 @@
 
     <TextView
         android:id="@+id/item_number"
-        android:text="Content"
+        tools:text="Content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/im_image" />
-
     <TextView
         android:id="@+id/content"
-        android:text="Content"
+        tools:text="Content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"

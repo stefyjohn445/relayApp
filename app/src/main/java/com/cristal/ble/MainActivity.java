@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -521,6 +522,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         } else {
             Toast.makeText(MainActivity.this, "Press again to exit", Toast.LENGTH_LONG).show();
             doubleTapToExit = true;
+            if (doubleTapToExitHandler == null) doubleTapToExitHandler = new Handler(Looper.getMainLooper());
             doubleTapToExitHandler.postDelayed(() -> {
                 doubleTapToExit = false;
             }, 2000);

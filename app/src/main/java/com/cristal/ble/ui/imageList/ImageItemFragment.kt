@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.cristal.ble.R
+import com.cristal.ble.api.audiobook
 import com.cristal.ble.ui.imageList.placeholder.PlaceholderContent
 
 /**
@@ -16,6 +17,7 @@ import com.cristal.ble.ui.imageList.placeholder.PlaceholderContent
  */
 class ImageItemFragment : Fragment() {
 
+    private lateinit var myImageItemRecyclerViewAdapter: MyImageItemRecyclerViewAdapter
     private var columnCount = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +42,15 @@ class ImageItemFragment : Fragment() {
 //                    else -> GridLayoutManager(context, columnCount)
                     else -> StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL)
                 }
-                adapter = MyImageItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
+//                myImageItemRecyclerViewAdapter = MyImageItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
+                myImageItemRecyclerViewAdapter = MyImageItemRecyclerViewAdapter(listOf())
+                adapter = myImageItemRecyclerViewAdapter
+
+                PlaceholderContent.getItems(object: PlaceholderContent.GetItemListener{
+                    override fun onUpdate(ITEMS: MutableList<audiobook>) {
+                        myImageItemRecyclerViewAdapter.update(PlaceholderContent.ITEMS)
+                    }
+                })
             }
         }
         return view

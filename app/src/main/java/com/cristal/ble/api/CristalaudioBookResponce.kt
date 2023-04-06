@@ -7,10 +7,9 @@ data class CristalaudioBookResponce(
 
 
 data class audiobook(
-
+    val bookId: Int,
+    val audioIds:Array<Int>,
     val book_name:String,
     val img:String,
-    val bookId: Int,
-    val audioIds:Array<Int>
 
 )
