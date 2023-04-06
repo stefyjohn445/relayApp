@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="8dp"
-    android:layout_marginTop="64dp"
+    android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
     app:cardCornerRadius="16dp">
@@ -39,6 +39,19 @@
         android:text="Playlist ..."
         android:background="#80ffffff"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:id="@+id/tv_add_songs"
+        android:textSize="32sp"
+        android:textColor="#2a2a2a"
+        android:layout_margin="8dp"
+        android:text="+"
+        android:gravity="center"
+        android:background="@drawable/green_dot"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 

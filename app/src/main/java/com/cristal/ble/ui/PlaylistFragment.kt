@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +23,7 @@ import com.cristal.ble.adapter.PlaylistAdapter
  */
 class PlaylistFragment : Fragment()  {
 
+    private var playlist_source: Int = 0
     private lateinit var playlist: java.util.ArrayList<String>
     private val TAG = "MainActivity"
 
@@ -35,6 +38,7 @@ class PlaylistFragment : Fragment()  {
 
         arguments?.let {
            playlist = it.getStringArrayList("PLAYLIST") ?: ArrayList()
+            playlist_source = it.getInt("PLAYLIST_SOURCE")
         }
     }
 
@@ -43,7 +47,14 @@ class PlaylistFragment : Fragment()  {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_playlist, container, false)
+        val view = inflater.inflate(R.layout.fragment_playlist, container, false)
+
+        val addSongs = view.findViewById<TextView>(R.id.tv_add_songs)
+        addSongs.visibility = if (playlist_source == 3) View.VISIBLE else View.GONE
+        addSongs.setOnClickListener {
+            Toast.makeText(context, "Add songs", Toast.LENGTH_SHORT).show()
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,11 +120,12 @@ class PlaylistFragment : Fragment()  {
 
     companion object {
         @JvmStatic
-        fun newInstance(playlist: ArrayList<String>) = PlaylistFragment()
+        fun newInstance(playlist: ArrayList<String>, imageSource: Int) = PlaylistFragment()
             .apply {
                 arguments = Bundle()
                     .apply {
                         putStringArrayList("PLAYLIST", playlist)
+                        putInt("PLAYLIST_SOURCE", imageSource)
                     }
             }
     }

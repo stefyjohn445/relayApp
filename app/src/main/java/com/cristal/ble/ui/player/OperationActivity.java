@@ -388,7 +388,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         System.out.println("---> showPlaylist\n");
         sendMusicControlCmd(CMD.getSDSONGLIST());
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, PlaylistFragment.newInstance(playList), "playList")
+                .add(R.id.fragment_container, PlaylistFragment.newInstance(playList, imageSource), "playList")
                 .addToBackStack("playList")
                 .commit();
 
@@ -525,6 +525,9 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         dialog.show();
 
     }
+
+    int imageSource = 0;
+
     private void selectMusicSource() {
         final Dialog dialog = new Dialog(OperationActivity.this);
         dialog.setContentView(R.layout.layout_select_source);
@@ -533,18 +536,21 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             playList = new ArrayList<>();
             showMapView();
 
+            imageSource = 0;
             dialog.dismiss();
         });
 
         dialog.findViewById(R.id.bt_sdcard).setOnClickListener(v -> {
             sendMusicControlCmd(CMD.getCMD_SRC_SD());
             playList = new ArrayList<>();
+            imageSource = 1;
             dialog.dismiss();
         });
 
         dialog.findViewById(R.id.bt_bluetooth).setOnClickListener(v -> {
             sendMusicControlCmd(CMD.getCMD_SRC_BLUTOOTH_STREAM());
             playList = new ArrayList<>();
+            imageSource = 2;
             dialog.dismiss();
         });
 
@@ -554,6 +560,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 //          showCloud();
 //          showcloudplaylist();
 
+            imageSource = 3;
             dialog.dismiss();
         });
 
