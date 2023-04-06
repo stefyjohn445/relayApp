@@ -22,18 +22,6 @@ object PlaceholderContent {
      */
     val ITEM_MAP: MutableMap<Int, audiobook> = HashMap()
 
-    private val COUNT = 10
-
-    init {
-        getCristalCloudImages();
-
-        // Add some sample items.
-        for (i in 1..COUNT) {
-            addItem(createPlaceholderItem(i,""))
-        }
-    }
-
-
     private fun addItem(item: audiobook) {
         ITEMS.add(item)
         ITEM_MAP.put(item.bookId, item)
@@ -43,23 +31,10 @@ object PlaceholderContent {
         return audiobook(bookId, audioIds, book_name, img)
     }
 
-    private fun makeDetails(position: Int): String {
-        val builder = StringBuilder()
-        builder.append("Details about Item: ").append(position)
-        for (i in 0..position - 1) {
-            builder.append("\nMore details information here.")
-        }
-        return builder.toString()
-    }
-
     interface GetItemListener {
         fun onUpdate(ITEMS: MutableList<audiobook>)
     }
 
-
-    public fun getCristalCloudImages(){
-
-    }
 
     fun getItems(getItemListener: GetItemListener) {
 
