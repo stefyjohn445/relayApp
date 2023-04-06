@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +12,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.cristal.ble.api.ApiRepository
 import com.cristal.ble.api.GeoWifiRadioResponse
-import android.location.LocationManager
-import com.cristal.ble.ui.LoginFragment
-import com.cristal.ble.ui.PlaylistFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,7 +20,6 @@ import com.google.android.gms.maps.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 
 
@@ -72,6 +67,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val mp= inflater.inflate(R.layout.fragment_map, container, false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
+
+        mp.findViewById<View>(R.id.btnPrevious).setOnClickListener {
+            // onClick btnPrevious
+            Toast.makeText(context, "onClick btnPrevious", Toast.LENGTH_SHORT).show()
+        }
+        mp.findViewById<View>(R.id.btnPlay).setOnClickListener {
+            // onClick btnPlay
+            Toast.makeText(context, "onClick btnPlay", Toast.LENGTH_SHORT).show()
+        }
+        mp.findViewById<View>(R.id.btnNext).setOnClickListener {
+            // onClick btnNext
+            Toast.makeText(context, "onClick btnNext", Toast.LENGTH_SHORT).show()
+        }
+
         return mp;
     }
 

@@ -18,7 +18,7 @@
     <View
         android:id="@+id/bg_toolbar"
         android:layout_width="240dp"
-        android:layout_height="72dp"
+        android:layout_height="56dp"
         android:elevation="24dp"
         android:background="@drawable/bg_toolbar"
         android:layout_marginBottom="32dp"
