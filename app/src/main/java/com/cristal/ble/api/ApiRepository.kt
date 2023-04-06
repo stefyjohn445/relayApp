@@ -93,8 +93,65 @@ class ApiRepository {
 //            val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
 
             val apiInterface: APIService = RetrofitClient.postClientToken(RetrofitClient.url,userToken).create(APIService::class.java)
+
             apiInterface.geoWifiRadio(req = req).enqueue(listener)
         }
+
+        @JvmStatic
+        fun GetCristalImg(
+            deviceId : String,
+            userId   : String,
+            userToken: String,
+            imagename : String,
+            listener: Callback<cristalcloudImgResponce>
+        ) {
+
+            val req = cristalcloudImgRequst(
+                deviceId = deviceId,
+                userId   = userId,
+                imagename = ""
+            )
+
+
+            val apiInterface: APIService = RetrofitClient.postClientToken(RetrofitClient.url,userToken).create(APIService::class.java)
+
+//            apiInterface.getcristalcloudimg(req = req).enqueue(listener)
+            apiInterface.getcristalcloudimg(deviceId=deviceId, userId = userId, userToken = userToken, imagename = imagename).enqueue(listener)
+
+        }
+
+
+        fun getcristalaudiobooks(
+            userId   : String,
+            userToken: String,
+            listener: Callback<CristalaudioBookResponce>
+        ) {
+
+            val req = crstalaudioBookRequst(
+                userId   = userId,
+            )
+
+
+            val apiInterface: APIService = RetrofitClient.postClientToken(RetrofitClient.url,userToken).create(APIService::class.java)
+
+            apiInterface.getcristalaudiobooks(userId = userId, userToken = userToken).enqueue(listener)
+
+        }
+
+        @JvmStatic
+        fun getcurrentsong(
+            deviceId : String,
+            userId   : String,
+            userToken: String,
+            listener: Callback<CristallGetCurrentSongNameResponce>
+        ) {
+
+            val apiInterface: APIService = RetrofitClient.postClientToken(RetrofitClient.url,userToken).create(APIService::class.java)
+
+            apiInterface.getcurrentsong(userId = userId, deviceId = deviceId , userToken = userToken).enqueue(listener)
+
+        }
+
 
 
     }

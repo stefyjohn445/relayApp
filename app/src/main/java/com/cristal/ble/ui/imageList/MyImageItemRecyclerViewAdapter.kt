@@ -1,5 +1,6 @@
 package com.cristal.ble.ui.imageList
 
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.cristal.ble.R
+import com.cristal.ble.api.ApiRepository
+import com.cristal.ble.api.cristalcloudImgResponce
 import com.cristal.ble.ui.imageList.placeholder.PlaceholderContent.PlaceholderItem
 
 /**
@@ -45,6 +48,7 @@ class MyImageItemRecyclerViewAdapter(
     }
 
     override fun getItemCount(): Int = values.size
+
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(
         view) {

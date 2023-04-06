@@ -3,6 +3,7 @@ package com.cristal.ble.api
 import retrofit2.Call
 import retrofit2.http.*
 
+
 interface APIService {
 
     /**
@@ -143,10 +144,42 @@ interface APIService {
     ): Call<CristalCloudSongListResponse>
 
 
-    @GET("/api/v1/resources/clinical-facilities/{cfId}/patients/{patientId}")
-    fun getPatientDetailsByID(
-        @Header("Authorization") authorization: String,
-        @Path("patientId") patientId: String?,
-        @Path("cfId") cfId: String?
-    ): Call<String?>
+//    @GET("/api/v1/resources/clinical-facilities/{cfId}/patients/{patientId}")
+//    fun getcristalcloudimg(
+//        @Header("Authorization") userToken: String,
+//        @Path("userId") userId: String?,
+//        @Path("deviceId") deviceId: String?
+//    ): Call<cristalcloudImgResponce?>
+
+    @GET("/api/app/getcristalcloudimg")
+    fun getcristalcloudimg(
+
+        @Header("Authorization") userToken: String,
+        @Query("userId") userId: String?,
+        @Query("deviceId") deviceId: String?,
+        @Query("imagename") imagename: String?
+
+    ): Call<cristalcloudImgResponce>
+
+    @GET("/api/app/getcristalaudiobooks")
+    fun getcristalaudiobooks(
+
+        @Header("Authorization") userToken: String,
+        @Query("userId") userId: String?
+
+    ): Call<CristalaudioBookResponce>
+
+    @GET("/api/app/getcurrentsong")
+    fun getcurrentsong(
+
+        @Header("Authorization") userToken: String,
+        @Query("userId") userId: String?,
+        @Query("deviceId") deviceId: String?
+
+
+        ): Call<CristallGetCurrentSongNameResponce>
+
+
+
+
 }

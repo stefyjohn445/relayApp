@@ -17,8 +17,8 @@ object RetrofitClient {
     val DUMMY_PASS = "amma123"
     val DUMMY_DEVID = "ABCD"
 
-//    val url = 'http://127.0.0.1:3001/'
-    val url = "http://192.168.29.220:3001/"
+//  val url = 'http://127.0.0.1:3001/'
+    val url = "http://192.168.0.114:3001/"
 
     fun getClient(baseUrl: String?): Retrofit {
 
@@ -59,8 +59,10 @@ object RetrofitClient {
         return retrofit;
     }
 
-    fun getClientToken(baseUrl: String?,token: String?): Retrofit {
+    fun getClientToken(baseUrl: String?,token: String?): Retrofit? {
         var YOUR_TOKEN = token;
+
+        System.out.println("---- url"+baseUrl);
 
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -70,6 +72,12 @@ object RetrofitClient {
                 chain.proceed(request)
             }.build())
             .build()
+
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(baseUrl)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+
 
         return retrofit;
     }
