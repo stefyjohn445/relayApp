@@ -1,5 +1,7 @@
 package com.cristal.ble.ui
 
+import android.R
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
@@ -53,6 +55,22 @@ class PlaylistFragment : Fragment()  {
         addSongs.visibility = if (playlist_source == 3) View.VISIBLE else View.GONE
         addSongs.setOnClickListener {
             Toast.makeText(context, "Add songs", Toast.LENGTH_SHORT).show()
+
+            val dialog = Dialog(context)
+
+            dialog.setContentView(R.layout.layout_add_songs)
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.setCancelable(false)
+//            dialog.getWindow().getAttributes().windowAnimations = R.style.animation
+
+//            cancel_text = dialog.findViewById(R.id.cancel_text)
+
+            dialog.findViewById<TextView>(R.id.bt_done).setOnClickListener(View.OnClickListener {
+                dialog.dismiss()
+                Toast.makeText(context, "okay clicked", Toast.LENGTH_SHORT).show()
+            })
+
+            dialog.show()
         }
         return view
     }
