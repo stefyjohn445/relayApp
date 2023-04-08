@@ -1,6 +1,5 @@
 package com.cristal.ble.ui
 
-import android.R
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context

@@ -1,5 +1,6 @@
 package com.cristal.ble.ui.imageList
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.cristal.ble.R
 import com.cristal.ble.api.audiobook
+import com.cristal.ble.ui.PlaylistFragment
 import com.cristal.ble.ui.imageList.placeholder.PlaceholderContent
 
 /**
@@ -44,7 +46,9 @@ class ImageItemFragment : Fragment() {
                 }
 //                myImageItemRecyclerViewAdapter = MyImageItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
                 myImageItemRecyclerViewAdapter = MyImageItemRecyclerViewAdapter(listOf())
+//                myImageItemRecyclerViewAdapter.callback = this@ImageItemFragment
                 adapter = myImageItemRecyclerViewAdapter
+
 
                 PlaceholderContent.getItems(object: PlaceholderContent.GetItemListener{
                     override fun onUpdate(ITEMS: MutableList<audiobook>) {
@@ -70,4 +74,9 @@ class ImageItemFragment : Fragment() {
                 }
             }
     }
+
+//    override fun setdaudiobook(data: String) {
+//        TODO("Not yet implemented")
+//        System.out.println("---->setdaudiobook"+data)
+//    }
 }

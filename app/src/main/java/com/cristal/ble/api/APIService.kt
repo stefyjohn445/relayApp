@@ -163,7 +163,6 @@ interface APIService {
 
     @GET("/api/app/getcristalaudiobooks")
     fun getcristalaudiobooks(
-
         @Header("Authorization") userToken: String,
         @Query("userId") userId: String?
 
@@ -175,11 +174,15 @@ interface APIService {
         @Header("Authorization") userToken: String,
         @Query("userId") userId: String?,
         @Query("deviceId") deviceId: String?
-
-
         ): Call<CristallGetCurrentSongNameResponce>
 
-
+    @GET("/api/app/nextsong")
+    fun setnextsngfromapp(
+        @Header("Authorization") userToken: String,
+        @Query("userId") userId: String?,
+        @Query("deviceId") deviceId: String?,
+        @Query("music_name") music_name: String?
+    ): Call<CristalSetNextSongfromAppResponce>
 
 
 }

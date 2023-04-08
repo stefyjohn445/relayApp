@@ -22,6 +22,8 @@ class MyImageItemRecyclerViewAdapter(
     private var values: List<audiobook>,
 ) : RecyclerView.Adapter<MyImageItemRecyclerViewAdapter.ViewHolder>() {
 
+    var callback: audionbookInterface? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_item, parent, false))
@@ -43,6 +45,7 @@ class MyImageItemRecyclerViewAdapter(
 
         holder.image.setOnClickListener {
             Toast.makeText(holder.image.context, "Clicked $position", Toast.LENGTH_SHORT).show()
+            callback?.setdaudiobook("Clicked")
         }
     }
 

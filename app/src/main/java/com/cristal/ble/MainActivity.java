@@ -8,9 +8,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -19,11 +21,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.clj.fastble.BleManager;
 import com.clj.fastble.data.BleDevice;
+import com.cristal.ble.api.ApiRepository;
+import com.cristal.ble.api.LoginResponse;
+import com.cristal.ble.api.cristalcloudImgResponce;
 import com.cristal.ble.ui.LoginFragment;
 import com.cristal.ble.ui.RegisterFragment;
 import com.cristal.ble.ui.ScanFragment;
+import com.cristal.ble.ui.player.OperationActivity;
+
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -93,7 +104,34 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 .replace(R.id.fragment_container, new LoginFragment(), "LoginFragment")
                 .commit();
     }
+    private void getToken( String email, String password) {
 
+
+        ApiRepository.login(email, password, new retrofit2.Callback<LoginResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
+                if (response.body() != null) {
+                    LoginResponse body = response.body();
+                    System.out.println("--java-> login" + body);
+                    System.out.println("---> " + body);
+                    if (body.getSuccess()) {
+                        AppPreference.preference.setLoginResponse(body);
+                        System.out.println("---> login " + body.getToken());
+//                        imageByteArray = body.getData().getImg();
+
+                    } else {
+                        System.out.println("---> login failed");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<LoginResponse> call, Throwable t) {
+                System.out.println("---> login ERROR" + t);
+            }
+        });
+
+    }
     @Override
     public void onLoginSuccess() {
         scan();
@@ -113,6 +151,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
         if (AppPreference.preference != null && AppPreference.preference.getLoginResponse() != null) {
             scan();
+            getToken(AppPreference.preference.getLoginRequest().getEmail(), AppPreference.preference.getLoginRequest().getPassword());
+
         } else {
             signin();
         }

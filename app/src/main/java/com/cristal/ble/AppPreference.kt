@@ -3,10 +3,13 @@ package com.cristal.ble
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.cristal.ble.api.LoginRequest
 import com.cristal.ble.api.LoginResponse
 import com.google.gson.Gson
 
 class AppPreference(context: Context?) {
+
+
 
     private var userPreference: SharedPreferences? = null
 
@@ -21,6 +24,22 @@ class AppPreference(context: Context?) {
         userPreference!!.edit().clear().apply()
         Log.d("USERPROFILE", userPreference?.all?.toList()!!.joinToString())
     }
+
+    var loginRequest: LoginRequest?
+        get() {
+            var obj: LoginRequest? = null
+            val gson = Gson()
+            val json = userPreference!!.getString(LOGIN_DETAILS, null)
+            json?.let {
+                obj = gson.fromJson(json, LoginRequest::class.java)
+            }
+            return obj
+        }
+        set(value) {
+            val gson = Gson()
+            val json = gson.toJson(value)
+            userPreference!!.edit()!!.putString(LOGIN_DETAILS, json).apply()
+        }
 
     var loginResponse: LoginResponse?
         get() {
@@ -51,6 +70,8 @@ ${userPreference?.all?.toList()?.joinToString("\n")}
 
         //  User profile
         private const val USER_DETAILS = "USER_DETAILS"
+        private const val LOGIN_DETAILS = "LOGIN_DETAILS"
+
         private const val USER_DETAILS_LOGIN_RESPONSE = "USER_DETAILS_LOGIN_RESPONSE"
 
         @JvmField

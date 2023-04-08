@@ -3,7 +3,7 @@ package com.cristal.ble.ui.player
 class CommandEnum {
 
     private val http :String   = "http://";
-    private val suburl:String = "/P?devid=abcd&flag=1&NP=>";
+    private val suburl:String = "/P?devid=abcd&src=1&flag=1&NP=>";
 
     public val ERROR: Byte = 0x0;
     public val CONTROLCMD:Byte = 0x1;
@@ -21,6 +21,9 @@ class CommandEnum {
     public val CRISTALCLOUDURL: Byte = 0x8;
     public val WIFIFMURL: Byte = 0x9;
     public val CMDINITSTATE: Byte = 0xA;
+
+    public val PLAYBUTTONCURRENTSTATUS: Byte = 0xc;
+    public val CURRENTSRCSTATUS:    Byte = 0xd;
 
 
     public val CMD_NONE = byteArrayOf(CONTROLCMD,0x0);
@@ -42,6 +45,23 @@ class CommandEnum {
     public val CMD_PLAYBUTTON_CURRENT_STATUS = byteArrayOf(CONTROLCMDSTATUS, 0x10);
     public val CMD_NEXT_WIFI_RADIO_URL = byteArrayOf(CONTROLCMD,0x11);
     public val CMD_SRC_CRISTAL_CLOUD   = byteArrayOf(CONTROLCMD,0x12);
+
+
+    // device source enums
+    public val SRC_NONE: Byte =  0x0;
+//    public val SRC_NONE : Byte = 0x0;
+    public val SDCARD: Byte = 0x1;
+    public val WIFI: Byte = 0x2;
+    public val BT_STREAM: Byte = 0x3;
+    public val WIFI_RADIO: Byte = 0x4;
+    public val WIFI_CRISTATL_CLOUD: Byte = 0x5;
+    public val WIFI_AUDIO_BOOK: Byte = 0x6;
+    public val WIFI_SPOTIFY: Byte = 0x7;
+    /*
+    add here
+    */
+    public val SRC_END: Byte = 0x8;
+
 
 
     fun buildCristalCloudUrl(srcip:String ): String {

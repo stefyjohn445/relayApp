@@ -1,78 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="16dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:paddingBottom="14dp">
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_title"
+        android:layout_margin="16dp"
+        android:alpha="0.9"
+        android:text="@string/menu_item_select_source"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_margin="16dp"
-        android:text="@string/menu_item_select_source"
-        android:alpha="0.9"
-        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="0dp"
-        android:layout_height="40dp"
         android:id="@+id/bt_wifi_radio"
-        android:textStyle="bold"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:layout_margin="16dp"
+        android:background="@drawable/bg"
+        android:gravity="center"
         android:text="Wi-Fi Radio"
-        android:gravity="center"
         android:textColor="@color/colorWhite"
-        android:background="@drawable/bg"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/bt_sdcard"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:id="@+id/bt_sdcard"
-        android:textStyle="bold"
-        android:layout_margin="16dp"
-        android:text="Sdcard"
-        android:gravity="center"
-        android:textColor="@color/colorWhite"
-        android:background="@drawable/bg"
-        app:layout_constraintStart_toEndOf="@+id/bt_wifi_radio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:id="@+id/bt_bluetooth"
-        android:textStyle="bold"
-        android:layout_margin="16dp"
-        android:text="Bluetooth"
-        android:gravity="center"
-        android:textColor="@color/colorWhite"
-        android:background="@drawable/bg"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_wifi_cloud"
-        app:layout_constraintTop_toBottomOf="@+id/bt_wifi_radio"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <TextView
+        android:id="@+id/bt_sdcard"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:id="@+id/bt_wifi_cloud"
-        android:textStyle="bold"
         android:layout_margin="16dp"
-        android:text="Wi-Fi Cloud"
-        android:gravity="center"
-        android:textColor="@color/colorWhite"
         android:background="@drawable/bg"
-        app:layout_constraintStart_toEndOf="@+id/bt_bluetooth"
+        android:gravity="center"
+        android:text="Sdcard"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_wifi_radio"/>
+        app:layout_constraintStart_toEndOf="@+id/bt_wifi_radio"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/bt_bluetooth"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg"
+        android:gravity="center"
+        android:text="Bluetooth"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/bt_wifi_cloud"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_wifi_radio" />
+
+    <TextView
+        android:id="@+id/bt_wfi_spotyfi"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg"
+        android:gravity="center"
+        android:text="Spotify"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/bt_wifi_audion_book"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bt_bluetooth" />
+
+    <TextView
+        android:id="@+id/bt_wifi_cloud"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg"
+        android:gravity="center"
+        android:text="Wi-Fi Cloud"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bt_bluetooth"
+        app:layout_constraintTop_toBottomOf="@+id/bt_wifi_radio" />
+
+    <TextView
+        android:id="@+id/bt_wifi_audion_book"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg"
+        android:gravity="center"
+        android:text="  Audio Books"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bt_bluetooth"
+        app:layout_constraintTop_toBottomOf="@id/bt_wifi_cloud" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,6 +24,7 @@ class ApiRepository {
             val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
             apiInterface.register(req = req).enqueue(listener)
         }
+        @JvmStatic
 
         fun login(
             email: String,
@@ -55,6 +56,7 @@ class ApiRepository {
             apiInterface.cloudStream(req = req).enqueue(listener)
         }
 
+        @JvmStatic
         fun CristalCloudSongList(
             deviceId : String,
             userId   : String,
@@ -152,6 +154,20 @@ class ApiRepository {
 
         }
 
+        @JvmStatic
+        fun setnextsngfromapp(
+            deviceId : String,
+            music_name: String,
+            userId   : String,
+            userToken: String,
+            listener: Callback<CristalSetNextSongfromAppResponce>
+        ) {
+
+            val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
+
+            apiInterface.setnextsngfromapp(userId = userId, deviceId = deviceId , userToken = userToken, music_name = music_name).enqueue(listener)
+
+        }
 
 
     }
