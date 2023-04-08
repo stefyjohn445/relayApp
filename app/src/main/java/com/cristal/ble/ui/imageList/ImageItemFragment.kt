@@ -46,7 +46,7 @@ class ImageItemFragment : Fragment(), audionbookInterface {
                 }
 //                myImageItemRecyclerViewAdapter = MyImageItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
                 myImageItemRecyclerViewAdapter = MyImageItemRecyclerViewAdapter(listOf())
-                myImageItemRecyclerViewAdapter.callback = this@ImageItemFragment
+                myImageItemRecyclerViewAdapter.callback = this@ImageItemFragment // change this to mListener if you don't want to get callback in this fragment and only ants in operation activity
                 adapter = myImageItemRecyclerViewAdapter
 
 
