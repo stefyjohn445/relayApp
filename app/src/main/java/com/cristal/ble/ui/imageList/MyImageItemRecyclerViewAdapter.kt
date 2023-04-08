@@ -19,7 +19,6 @@ import com.cristal.ble.api.audiobook
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.content.Context
 
 /**
  * [RecyclerView.Adapter] that can display a [audiobook].

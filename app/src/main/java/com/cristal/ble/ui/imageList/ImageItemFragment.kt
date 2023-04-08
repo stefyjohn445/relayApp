@@ -1,6 +1,5 @@
 package com.cristal.ble.ui.imageList
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.cristal.ble.R
 import com.cristal.ble.api.audiobook
-import com.cristal.ble.ui.PlaylistFragment
 import com.cristal.ble.ui.imageList.placeholder.PlaceholderContent
 
 /**
@@ -46,7 +44,7 @@ class ImageItemFragment : Fragment(), audionbookInterface {
                 }
 //                myImageItemRecyclerViewAdapter = MyImageItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
                 myImageItemRecyclerViewAdapter = MyImageItemRecyclerViewAdapter(listOf())
-                myImageItemRecyclerViewAdapter.callback = ImageItemFragment()
+                myImageItemRecyclerViewAdapter.callback = this@ImageItemFragment
                 adapter = myImageItemRecyclerViewAdapter
 
 
