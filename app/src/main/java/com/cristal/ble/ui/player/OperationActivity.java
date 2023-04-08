@@ -44,6 +44,7 @@ import com.cristal.ble.ui.PlaylistFragment;
 import com.cristal.ble.ui.imageList.ImageItemFragment;
 import com.cristal.ble.ui.imageList.MyImageItemRecyclerViewAdapter;
 
+import com.cristal.ble.ui.imageList.audionbookInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class OperationActivity extends AppCompatActivity implements Observer,
-        PlaylistFragment.FragmentInteractionListener,MapFragment.FragmentInteractionListener {
+        PlaylistFragment.FragmentInteractionListener,MapFragment.FragmentInteractionListener, audionbookInterface {
 
     private static final String TAG = "OperationActivity";
 
@@ -1111,4 +1112,8 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         }
     }
 
+    @Override
+    public void setdaudiobook(@NotNull String data) {
+        Toast.makeText(OperationActivity.this, "Operation activity: audio book: " + data, Toast.LENGTH_LONG).show();
+    }
 }

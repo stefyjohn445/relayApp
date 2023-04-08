@@ -1,5 +1,6 @@
 package com.cristal.ble.ui.imageList
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.cristal.ble.ui.imageList.placeholder.PlaceholderContent
  */
 class ImageItemFragment : Fragment(), audionbookInterface {
 
+    private var mListener: audionbookInterface? = null
     private lateinit var myImageItemRecyclerViewAdapter: MyImageItemRecyclerViewAdapter
     private var columnCount = 2
 
@@ -58,6 +60,19 @@ class ImageItemFragment : Fragment(), audionbookInterface {
         return view
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        if (context is audionbookInterface){
+            mListener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mListener = null
+    }
+
     companion object {
 
         // TODO: Customize parameter argument names
@@ -77,5 +92,6 @@ class ImageItemFragment : Fragment(), audionbookInterface {
     override fun setdaudiobook(data: String) {
         TODO("Not yet implemented")
         System.out.println("---->setdaudiobook"+ data)
+        mListener?.setdaudiobook(data)
     }
 }
