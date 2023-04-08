@@ -17,7 +17,7 @@ import com.cristal.ble.ui.imageList.placeholder.PlaceholderContent
 /**
  * A fragment representing a list of Items.
  */
-class ImageItemFragment : Fragment() {
+class ImageItemFragment : Fragment(), audionbookInterface {
 
     private lateinit var myImageItemRecyclerViewAdapter: MyImageItemRecyclerViewAdapter
     private var columnCount = 2
@@ -46,7 +46,7 @@ class ImageItemFragment : Fragment() {
                 }
 //                myImageItemRecyclerViewAdapter = MyImageItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
                 myImageItemRecyclerViewAdapter = MyImageItemRecyclerViewAdapter(listOf())
-//                myImageItemRecyclerViewAdapter.callback = this@ImageItemFragment
+                myImageItemRecyclerViewAdapter.callback = ImageItemFragment()
                 adapter = myImageItemRecyclerViewAdapter
 
 
@@ -75,8 +75,9 @@ class ImageItemFragment : Fragment() {
             }
     }
 
-//    override fun setdaudiobook(data: String) {
-//        TODO("Not yet implemented")
-//        System.out.println("---->setdaudiobook"+data)
-//    }
+
+    override fun setdaudiobook(data: String) {
+        TODO("Not yet implemented")
+        System.out.println("---->setdaudiobook"+ data)
+    }
 }

@@ -185,4 +185,15 @@ interface APIService {
     ): Call<CristalSetNextSongfromAppResponce>
 
 
+    @GET("/api/app/setnextaudiobookfromapp")
+    fun setnextaudiobookfromapp(
+        @Header("Authorization") userToken: String,
+        @Query("deviceId") deviceId: String?,
+        @Query("userId") userId: String?,
+        @Query("bookname") bookname: String?,
+        @Query("bookId") bookId: Int?,
+        @Query("audioid") audioid: Int?
+    ): Call<CristalNextAudioBookFromAppResponce>
+
+
 }

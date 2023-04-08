@@ -11,8 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.cristal.ble.AppPreference
 import com.cristal.ble.R
+import com.cristal.ble.api.ApiRepository
+import com.cristal.ble.api.CristalNextAudioBookFromAppResponce
 import com.cristal.ble.api.audiobook
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import android.content.Context
 
 /**
  * [RecyclerView.Adapter] that can display a [audiobook].
@@ -45,7 +52,10 @@ class MyImageItemRecyclerViewAdapter(
 
         holder.image.setOnClickListener {
             Toast.makeText(holder.image.context, "Clicked $position", Toast.LENGTH_SHORT).show()
-            callback?.setdaudiobook("Clicked")
+            System.out.println("----> audio boos: "+values[position]);
+            callback?.setdaudiobook(item.book_name)
+            setnextAudioBook(holder,item.book_name,item.bookId,item.audioIds[0])
+
         }
     }
 
@@ -72,5 +82,35 @@ class MyImageItemRecyclerViewAdapter(
             return super.toString() + " '" + contentView.text + "'"
         }
     }
+
+  fun setnextAudioBook(holder: ViewHolder,bookname : String, bookId  : Int,audioid: Int){
+
+
+      AppPreference.preference!!.loginResponse?.user?.let {
+          AppPreference.preference!!.loginResponse?.let { it1 ->
+              ApiRepository.setnextaudiobookfromapp("abcd", it.email,bookname,bookId,audioid,
+                  it1.token, object :
+                      Callback<CristalNextAudioBookFromAppResponce> {
+                      override fun onResponse(call: Call<CristalNextAudioBookFromAppResponce>, response: Response<CristalNextAudioBookFromAppResponce>) {
+
+                          response.body()?.let {
+
+                              System.out.println("---> GeoWifiRadio 3333"+it);
+
+
+                          } ?: Toast.makeText(holder.image.context, "aded to server", Toast.LENGTH_SHORT).show()
+                      }
+
+                      override fun onFailure(call: Call<CristalNextAudioBookFromAppResponce>, t: Throwable) {
+
+                          System.out.println("---> GeoWifiRadio 444 ERROR" + t);
+                          Toast.makeText(holder.image.context, "erorr with ading the next audio", Toast.LENGTH_SHORT).show()
+
+                      }
+                  })
+          }
+      }
+
+  }
 
 }

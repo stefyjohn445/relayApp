@@ -169,7 +169,21 @@ class ApiRepository {
 
         }
 
+        fun setnextaudiobookfromapp(
+            deviceId : String,
+            userId: String,
+            bookname: String,
+            bookId  : Int,
+            audioid: Int,
+            userToken:String,
+            listener: Callback<CristalNextAudioBookFromAppResponce>
+        ) {
 
+            val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
+
+            apiInterface.setnextaudiobookfromapp(userId = userId, deviceId = deviceId , userToken = userToken, bookname = bookname , bookId = bookId, audioid = audioid).enqueue(listener)
+
+        }
     }
 }
 
