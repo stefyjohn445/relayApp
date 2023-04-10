@@ -13,7 +13,9 @@ import com.clj.fastble.data.BleDevice;
 import com.cristal.ble.R;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder>{
@@ -70,8 +72,14 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String[] separated = mBleDeviceList.get(position).split("/");
+        if (separated.length > 2){
+            holder.deviceNameTxt.setText(separated[separated.length-1]);
+        }else {
+            holder.deviceNameTxt.setText(mBleDeviceList.get(position));
 
-        holder.deviceNameTxt.setText(mBleDeviceList.get(position));
+        }
+
     }
 
     @Override

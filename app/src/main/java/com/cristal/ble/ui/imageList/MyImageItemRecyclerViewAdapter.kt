@@ -52,7 +52,6 @@ class MyImageItemRecyclerViewAdapter(
         holder.image.setOnClickListener {
             Toast.makeText(holder.image.context, "Clicked $position", Toast.LENGTH_SHORT).show()
             System.out.println("----> audio boos: "+values[position]);
-            callback?.setdaudiobook(item.book_name)
             setnextAudioBook(holder,item.book_name,item.bookId,item.audioIds[0])
 
         }
@@ -87,7 +86,7 @@ class MyImageItemRecyclerViewAdapter(
 
       AppPreference.preference!!.loginResponse?.user?.let {
           AppPreference.preference!!.loginResponse?.let { it1 ->
-              ApiRepository.setnextaudiobookfromapp("abcd", it.email,bookname,bookId,audioid,
+              ApiRepository.setnextaudiobookfromapp("abcd", it.email,bookname,bookId,audioid,null,
                   it1.token, object :
                       Callback<CristalNextAudioBookFromAppResponce> {
                       override fun onResponse(call: Call<CristalNextAudioBookFromAppResponce>, response: Response<CristalNextAudioBookFromAppResponce>) {
@@ -95,6 +94,7 @@ class MyImageItemRecyclerViewAdapter(
                           response.body()?.let {
 
                               System.out.println("---> GeoWifiRadio 3333"+it);
+                              callback?.setdaudiobook(it.data.bookname,it.data.listofaudios)
 
 
                           } ?: Toast.makeText(holder.image.context, "aded to server", Toast.LENGTH_SHORT).show()

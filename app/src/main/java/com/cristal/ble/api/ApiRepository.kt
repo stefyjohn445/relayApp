@@ -1,6 +1,5 @@
 package com.cristal.ble.api
 
-import android.media.session.MediaSession.Token
 import retrofit2.Callback
 
 
@@ -111,7 +110,7 @@ class ApiRepository {
             val req = cristalcloudImgRequst(
                 deviceId = deviceId,
                 userId   = userId,
-                imagename = ""
+                imagename = imagename
             )
 
 
@@ -168,22 +167,45 @@ class ApiRepository {
             apiInterface.setnextsngfromapp(userId = userId, deviceId = deviceId , userToken = userToken, music_name = music_name).enqueue(listener)
 
         }
-
+        @JvmStatic
         fun setnextaudiobookfromapp(
-            deviceId : String,
+            deviceId: String,
             userId: String,
             bookname: String,
-            bookId  : Int,
+            bookId: Int,
             audioid: Int,
+            audio: String?,
             userToken:String,
             listener: Callback<CristalNextAudioBookFromAppResponce>
         ) {
 
             val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
 
-            apiInterface.setnextaudiobookfromapp(userId = userId, deviceId = deviceId , userToken = userToken, bookname = bookname , bookId = bookId, audioid = audioid).enqueue(listener)
+            apiInterface.setnextaudiobookfromapp(userId = userId, deviceId = deviceId , userToken = userToken, bookname = bookname , bookId = bookId, audioid = audioid ,audio =audio).enqueue(listener)
 
         }
+
+        @JvmStatic
+        fun Getcurrentaudiobookfromapp(
+            deviceId : String,
+            userId   : String,
+            userToken: String,
+            listener: Callback<GetCurrentAudiobookResponce>
+        ) {
+
+            val req = cristalcloudImgRequst(
+                deviceId = deviceId,
+                userId   = userId,
+                imagename = ""
+            )
+
+
+            val apiInterface: APIService = RetrofitClient.postClientToken(RetrofitClient.url,userToken).create(APIService::class.java)
+            apiInterface.getcurrentaudiobookfromapp(deviceId=deviceId, userId = userId, userToken = userToken).enqueue(listener)
+
+        }
+
+
     }
 }
 

@@ -192,8 +192,16 @@ interface APIService {
         @Query("userId") userId: String?,
         @Query("bookname") bookname: String?,
         @Query("bookId") bookId: Int?,
-        @Query("audioid") audioid: Int?
+        @Query("audioid") audioid: Int?,
+        @Query("audio") audio: String?,
     ): Call<CristalNextAudioBookFromAppResponce>
 
+    @GET("/api/app/getcurrentaudiobookfromapp")
+    fun getcurrentaudiobookfromapp(
+
+        @Header("Authorization") userToken: String,
+        @Query("userId") userId: String?,
+        @Query("deviceId") deviceId: String?
+    ): Call<GetCurrentAudiobookResponce>
 
 }

@@ -45,6 +45,7 @@ class CommandEnum {
     public val CMD_PLAYBUTTON_CURRENT_STATUS = byteArrayOf(CONTROLCMDSTATUS, 0x10);
     public val CMD_NEXT_WIFI_RADIO_URL = byteArrayOf(CONTROLCMD,0x11);
     public val CMD_SRC_CRISTAL_CLOUD   = byteArrayOf(CONTROLCMD,0x12);
+    public val CMD_SRC_CRISTAL_AUDIO_BOOK:Byte = 0x13;
 
 
     // device source enums
@@ -68,6 +69,14 @@ class CommandEnum {
 
         return http+srcip+suburl;
 
+    }
+    fun builControllcomand(cmd: Byte): ByteArray{
+
+        return byteArrayOf(CONTROLCMD,cmd)
+    }
+    fun builControllstatuscomand(cmd: Byte): ByteArray{
+
+        return byteArrayOf(CONTROLCMDSTATUS,cmd)
     }
 
 }

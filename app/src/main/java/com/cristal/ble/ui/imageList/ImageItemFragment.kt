@@ -49,7 +49,6 @@ class ImageItemFragment : Fragment(), audionbookInterface {
                 myImageItemRecyclerViewAdapter.callback = this@ImageItemFragment // change this to mListener if you don't want to get callback in this fragment and only ants in operation activity
                 adapter = myImageItemRecyclerViewAdapter
 
-
                 PlaceholderContent.getItems(object: PlaceholderContent.GetItemListener{
                     override fun onUpdate(ITEMS: MutableList<audiobook>) {
                         myImageItemRecyclerViewAdapter.update(PlaceholderContent.ITEMS)
@@ -89,9 +88,8 @@ class ImageItemFragment : Fragment(), audionbookInterface {
     }
 
 
-    override fun setdaudiobook(data: String) {
-        TODO("Not yet implemented")
+    override fun setdaudiobook(data: String, listofaudios: Array<Int>) {
         System.out.println("---->setdaudiobook"+ data)
-        mListener?.setdaudiobook(data)
+        mListener?.setdaudiobook(data,listofaudios)
     }
 }

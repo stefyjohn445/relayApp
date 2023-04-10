@@ -7,5 +7,6 @@ data class CristalNextAudioBookFromAppResponce(
 )
 
 data class audiobookData(
+    val bookname: String,
     val listofaudios: Array<Int>
 )

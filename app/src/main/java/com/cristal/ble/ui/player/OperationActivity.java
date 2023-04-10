@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,13 +27,14 @@ import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.cristal.ble.AppPreference;
-import com.cristal.ble.MainActivity;
 import com.cristal.ble.MapFragment;
 import com.cristal.ble.R;
 import com.cristal.ble.api.ApiRepository;
 import com.cristal.ble.api.CristalCloudSongListResponse;
+import com.cristal.ble.api.CristalNextAudioBookFromAppResponce;
 import com.cristal.ble.api.CristalSetNextSongfromAppResponce;
 import com.cristal.ble.api.CristallGetCurrentSongNameResponce;
+import com.cristal.ble.api.GetCurrentAudiobookResponce;
 import com.cristal.ble.api.cristalcloudImgResponce;
 import com.cristal.ble.comm.Observer;
 import com.cristal.ble.comm.ObserverManager;
@@ -42,7 +42,6 @@ import com.cristal.ble.operation.CharacteristicListFragment;
 import com.cristal.ble.operation.CharacteristicOperationFragment;
 import com.cristal.ble.ui.PlaylistFragment;
 import com.cristal.ble.ui.imageList.ImageItemFragment;
-import com.cristal.ble.ui.imageList.MyImageItemRecyclerViewAdapter;
 
 import com.cristal.ble.ui.imageList.audionbookInterface;
 import org.jetbrains.annotations.NotNull;
@@ -112,6 +111,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     private String deviceCurrentSource = "";
     private Byte deviceCurrentSourceBite = 0x0;
 
+    private Dialog MusicSourcedialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,6 +206,16 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         CurrentSong = (TextView) findViewById(R.id.tv_playlist);
         CurrentSong2 = (TextView) findViewById(R.id.tv_song);
 
+
+        btnRepeat.setOnClickListener((view) -> {
+
+
+            System.out.println("btnRepeat ------>"+CurrentSong);
+            getCurrentSongName();
+
+
+        });
+
         CurrentSong.setOnClickListener((view) -> {
 
 
@@ -242,6 +252,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             }
             else if(deviceCurrentSourceBite == CMD.getWIFI_AUDIO_BOOK()){
                 deviceCurrentSource = "Wifi Audio Book";
+                showPlaylist();
             }
             else if(deviceCurrentSourceBite == CMD.getWIFI_SPOTIFY()){
                 deviceCurrentSource = "Wifi Spotify";
@@ -354,12 +365,12 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                     System.out.println("---> " + body);
                     if(body.getSuccess()) {
                         CurrentSong.setText(body.getData().getMusic_name());
-                        CurrentSong.setText(body.getData().getMusic_name());
+                        CurrentSong2.setText(body.getData().getMusic_name());
 
                         setsongnameflasg = true;
                     }else{
                         CurrentSong.setText("No Name");
-                        CurrentSong.setText("Server error");
+                        CurrentSong2.setText("Server error");
                         setsongnameflasg = false;
                     }
                 }
@@ -370,7 +381,6 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                 System.out.println("---> GeoWifiRadio 444 ERROR" + t);
             }
         });
-
 
     }
 
@@ -386,7 +396,6 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                     System.out.println("---> " + body);
                     if (body.success) {
                         System.out.println("---> Base64 " + Base64.decode(body.getData().getImg(), Base64.DEFAULT));
-//                        imageByteArray = body.getData().getImg();
                         Glide.with(OperationActivity.this)
                             .load( Base64.decode(body.getData().getImg(), Base64.DEFAULT))
 
@@ -409,6 +418,57 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
 
     }
+
+    private void getcurrentaudiobook(){
+
+        playList = new ArrayList<>();
+        ApiRepository.Getcurrentaudiobookfromapp("abcd", AppPreference.preference.getLoginResponse().getUser().getEmail(),AppPreference.preference.getLoginResponse().getToken(), new retrofit2.Callback<GetCurrentAudiobookResponce>() {
+            @Override
+            public void onResponse(retrofit2.Call<GetCurrentAudiobookResponce> call, retrofit2.Response<GetCurrentAudiobookResponce> response) {
+                if (response.body() != null) {
+                    GetCurrentAudiobookResponce body = response.body();
+                    System.out.println("---> getcurrentaudiobook:  " + body.getData().getAudio_name());
+                    System.out.println("---> getcurrentaudiobook:  " + body.getData().getBook_name());
+
+                    if (body.getSuccess()) {
+//                        System.out.println("---> getcurrentaudiobook " + Base64.decode(body.getData().getImg(), Base64.DEFAULT));
+                        for(String songs: body.getData().getAudios()) {
+                            playList.add(songs);
+//                          System.out.println("---> getcurrentaudiobook playlsit "+playList);
+
+                        }
+
+//                        imageByteArray = body.getData().getImg();
+                        Glide.with(OperationActivity.this)
+                                .load( Base64.decode(body.getData().getImg(), Base64.DEFAULT))
+                                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE).placeholder(R.drawable.song_logo)
+                                        .error(R.drawable.song_logo))
+                                .into(((ImageView) findViewById(R.id.im_music)));
+
+                        CurrentSong.setText(body.getData().getAudio_name());
+                        CurrentSong2.setText(body.getData().getAudio_name());
+
+                    } else {
+                        CurrentSong.setText("NO name");
+                        CurrentSong2.setText("NO name");
+
+
+                        System.out.println("---> get getcurrentaudiobook failed");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<GetCurrentAudiobookResponce> call, Throwable t) {
+                CurrentSong.setText("Get Error");
+                CurrentSong2.setText("Get Error");
+                System.out.println("---> getcurrentaudiobook 444 ERROR" + t);
+            }
+        });
+
+
+    }
+
 
     private void showcloudplaylist(){
 
@@ -443,7 +503,37 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
     }
 
-    private void showPlaylist() {
+    private void setnextAudioBook(String audioname) {
+
+        ApiRepository.setnextaudiobookfromapp("abcd", AppPreference.preference.getLoginResponse().getUser().getEmail(),"",0,0,audioname,AppPreference.preference.getLoginResponse().getToken(), new retrofit2.Callback<CristalNextAudioBookFromAppResponce>() {
+        @Override
+        public void onResponse(retrofit2.Call<CristalNextAudioBookFromAppResponce> call, retrofit2.Response<CristalNextAudioBookFromAppResponce> response) {
+            if (response.body() != null) {
+                CristalNextAudioBookFromAppResponce body = response.body();
+                System.out.println("--java-> CristalCloudSongListResponse.GetCristalImg 3333" + body);
+                System.out.println("---> " + body);
+                if (body.getSuccess()) {
+                    System.out.println("---> Base64 "+body.getData());
+                    sendMusicControlCmd(CMD.getCMD_NEXT());
+                    mHandler.postDelayed(mUpdateTimeTask, 100);
+                    getcurrentaudiobook();
+
+                } else {
+                    System.out.println("---> get CristalCloudSongListResponse failed");
+                }
+            }
+        }
+
+        @Override
+        public void onFailure(retrofit2.Call<CristalNextAudioBookFromAppResponce> call, Throwable t) {
+            System.out.println("---> CristalCloudSongListResponse 444 ERROR" + t);
+        }
+    });
+
+
+
+}
+        private void showPlaylist() {
 
         System.out.println("---> showPlaylist\n");
         getSupportFragmentManager().beginTransaction()
@@ -584,57 +674,66 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     int imageSource = 0;
 
     private void selectMusicSource() {
-        selectmusicsource = true;
-        final Dialog dialog = new Dialog(OperationActivity.this);
-        dialog.setContentView(R.layout.layout_select_source);
+        MusicSourcedialog = new Dialog(OperationActivity.this);
+        MusicSourcedialog.setContentView(R.layout.layout_select_source);
 
-        dialog.findViewById(R.id.bt_wifi_radio).setOnClickListener(v -> {
+        MusicSourcedialog.findViewById(R.id.bt_wifi_radio).setOnClickListener(v -> {
+            if(selectmusicsource){
+                selectmusicsource = true;
+                MusicSourcedialog.dismiss();
+
+            }
+            setsongnameflasg =false;
             playList = new ArrayList<>();
             showMapView();
             imageSource = 0;
-            dialog.dismiss();
+            MusicSourcedialog.dismiss();
             selectmusicsource = false;
 
         });
 
-        dialog.findViewById(R.id.bt_sdcard).setOnClickListener(v -> {
+        MusicSourcedialog.findViewById(R.id.bt_sdcard).setOnClickListener(v -> {
             sendMusicControlCmd(CMD.getCMD_SRC_SD());
+            setsongnameflasg =false;
             playList = new ArrayList<>();
             imageSource = 1;
-            dialog.dismiss();
+            MusicSourcedialog.dismiss();
             selectmusicsource = false;
         });
 
-        dialog.findViewById(R.id.bt_bluetooth).setOnClickListener(v -> {
+        MusicSourcedialog.findViewById(R.id.bt_bluetooth).setOnClickListener(v -> {
+            setsongnameflasg =false;
             sendMusicControlCmd(CMD.getCMD_SRC_BLUTOOTH_STREAM());
             playList = new ArrayList<>();
             imageSource = 2;
-            dialog.dismiss();
+            MusicSourcedialog.dismiss();
             selectmusicsource = false;
         });
 
-        dialog.findViewById(R.id.bt_wifi_cloud).setOnClickListener(v -> {
+        MusicSourcedialog.findViewById(R.id.bt_wifi_cloud).setOnClickListener(v -> {
             playList = new ArrayList<>();
             sendMusicControlCmd(CMD.getCMD_SRC_CRISTAL_CLOUD());
             getCurrentSongName();
 //          showCloud();
             imageSource = 3;
-            dialog.dismiss();
+            MusicSourcedialog.dismiss();
             selectmusicsource = false;
         });
 
-        dialog.findViewById(R.id.bt_wifi_audion_book).setOnClickListener(v -> {
+        MusicSourcedialog.findViewById(R.id.bt_wifi_audion_book).setOnClickListener(v -> {
+            setsongnameflasg =false;
+            selectmusicsource = false;
             playList = new ArrayList<>();
             showAudioBooks();
-//          sendMusicControlCmd(CMD.getCMD_SRC_CRISTAL_CLOUD());
+            sendMusicControlCmd(CMD.builControllcomand(CMD.getCMD_SRC_CRISTAL_AUDIO_BOOK()));
             imageSource = 4;
-            dialog.dismiss();
-            selectmusicsource = false;
+            MusicSourcedialog.dismiss();
         });
 
 
 
-        dialog.show();
+        MusicSourcedialog.show();
+
     }
 
     /**
@@ -658,9 +757,9 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 //            songCurrentDurationLabel.setText(""+utils.milliSecondsToTimer(currentDuration));
 
             // Updating progress bar
-            int progress = 2;
+//            int progress = 2;
             //Log.d("Progress", ""+progress);
-            songProgressBar.setProgress(progress);
+//            songProgressBar.setProgress(progress);
 
             // Running this thread after 100 milliseconds
             mHandler.postDelayed(this, 100);
@@ -694,6 +793,38 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         System.arraycopy(b, 0, result, a.length, b.length);
         return result;
     }
+    private void getCurrentSongName(){
+
+        if(deviceCurrentSourceBite == CMD.getSRC_NONE()){
+            deviceCurrentSource = "ERORR";
+        }
+        else if(deviceCurrentSourceBite == CMD.getSDCARD()){
+            sendMusicControlCmd(CMD.getSDSONGURL());
+        }
+        else if(deviceCurrentSourceBite == CMD.getBT_STREAM()){
+            deviceCurrentSource = "Bluetooth Sream";
+        }
+        else if(deviceCurrentSourceBite == CMD.getWIFI_RADIO()){
+            deviceCurrentSource = "Wifi Radio";
+        }
+        else if(deviceCurrentSourceBite == CMD.getWIFI_CRISTATL_CLOUD()){
+            getcurrentruningsong();
+
+        }
+        else if(deviceCurrentSourceBite == CMD.getWIFI_AUDIO_BOOK()){
+            deviceCurrentSource = "Wifi Audio Book";
+            mHandler.postDelayed(mUpdateTimeTask, 100);
+            getcurrentaudiobook();
+        }
+        else if(deviceCurrentSourceBite == CMD.getWIFI_SPOTIFY()){
+            deviceCurrentSource = "Wifi Spotify";
+        }
+        else if(deviceCurrentSourceBite == CMD.getSRC_END()){
+            deviceCurrentSource = "ERORR";
+        }
+
+    }
+
     public void  send_wifi_config_to_device(byte action,byte [] sendMsg){
 
         final byte[] tag_LEN = new byte[2];
@@ -722,48 +853,29 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         );
     }
 
-    private void getCurrentSongName(){
-
-        if(deviceCurrentSourceBite == CMD.getSRC_NONE()){
-            deviceCurrentSource = "ERORR";
-        }
-        else if(deviceCurrentSourceBite == CMD.getSDCARD()){
-            sendMusicControlCmd(CMD.getSDSONGURL());
-        }
-        else if(deviceCurrentSourceBite == CMD.getBT_STREAM()){
-            deviceCurrentSource = "Bluetooth Sream";
-        }
-        else if(deviceCurrentSourceBite == CMD.getWIFI_RADIO()){
-            deviceCurrentSource = "Wifi Radio";
-        }
-        else if(deviceCurrentSourceBite == CMD.getWIFI_CRISTATL_CLOUD()){
-            getcurrentruningsong();
-
-        }
-        else if(deviceCurrentSourceBite == CMD.getWIFI_AUDIO_BOOK()){
-            deviceCurrentSource = "Wifi Audio Book";
-        }
-        else if(deviceCurrentSourceBite == CMD.getWIFI_SPOTIFY()){
-            deviceCurrentSource = "Wifi Spotify";
-        }
-        else if(deviceCurrentSourceBite == CMD.getSRC_END()){
-            deviceCurrentSource = "ERORR";
-        }
-
-    }
-
     private void setdevicesrc(byte src){
-
+        if (!setsongnameflasg){
+            setsongnameflasg = true;
+            getCurrentSongName();
+        }
 
         deviceCurrentSourceBite = src;
+
+
         if(src == CMD.getSRC_NONE()){
             deviceCurrentSource = "please select music source";
 //            Toast.makeText(OperationActivity.this, "please select music source", Toast.LENGTH_SHORT).show();
-            if(!selectmusicsource)
+            if(!selectmusicsource){
                 selectMusicSource();
+                selectmusicsource = true;
+            }
         }
         else if(src == CMD.getSDCARD()){
             deviceCurrentSource = "Memory Card";
+            if(selectmusicsource){
+                MusicSourcedialog.dismiss();
+
+            }
         }
         else if(src == CMD.getBT_STREAM()){
             deviceCurrentSource = "Bluetooth Sream";
@@ -775,7 +887,9 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             deviceCurrentSource = "Cristal Cloud";
         }
         else if(src == CMD.getWIFI_AUDIO_BOOK()){
+
             deviceCurrentSource = "Wifi Audio Book";
+
         }
         else if(src == CMD.getWIFI_SPOTIFY()){
             deviceCurrentSource = "Wifi Spotify";
@@ -823,7 +937,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
                         if(data[0] == CMD.getPROGRESSBAR()) {
                             float proces1 = Float.valueOf(tmp.substring(1,6));
-                            if(proces1 <1.5){
+                            if(proces1 <1){
                                 getCurrentSongName();
                             }
                             songProgressBar.setProgress((int) proces1);
@@ -831,11 +945,16 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                         else if(data[0] == CMD.getCONTROLCMDSTATUS()) {
 
                             System.out.println("------>getCONTROLCMDSTATUS");
+                            if (data[1] == CMD.getCMD_NEXT()[1] || data[1] == CMD.getCMD_PREV()[1])
+                            {
+                                getCurrentSongName();
+                            }
 
                         }
                         else if(data[0] == CMD.getCURRENTSRCSTATUS()) {
 
                             System.out.println("------>getCURRENTSRCSTATUS: "+data[1]);
+
                             setdevicesrc(data[1]);
 
 
@@ -1045,9 +1164,10 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             setnextcristalcludsong(url);
 
         }
-//        else if(deviceCurrentSourceBite == CMD.getWIFI_AUDIO_BOOK()){
-//            deviceCurrentSource = "Wifi Audio Book";
-//        }
+        else if(deviceCurrentSourceBite == CMD.getWIFI_AUDIO_BOOK()){
+            System.out.println("---> next audion "+url);
+            setnextAudioBook(url);
+        }
 //        else if(deviceCurrentSourceBite == CMD.getWIFI_SPOTIFY()){
 //            deviceCurrentSource = "Wifi Spotify";
 //        }
@@ -1095,6 +1215,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             super.onBackPressed();
         } else if (f instanceof PlaylistFragment) {
             super.onBackPressed();
+            getCurrentSongName();
         } else if (f instanceof ImageItemFragment) {
             super.onBackPressed();
         } else {
@@ -1113,7 +1234,18 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     }
 
     @Override
-    public void setdaudiobook(@NotNull String data) {
+    public void setdaudiobook(@NotNull String data, @NotNull Integer[] listofaudios) {
+        System.out.println("---> setdaudiobook: "+data+" -- "+listofaudios);
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (f instanceof ImageItemFragment) {
+            super.onBackPressed();
+
+        }
         Toast.makeText(OperationActivity.this, "Operation activity: audio book: " + data, Toast.LENGTH_LONG).show();
+        mHandler.postDelayed(mUpdateTimeTask, 100);
+        sendMusicControlCmd(CMD.getCMD_NEXT());
+        mHandler.postDelayed(mUpdateTimeTask, 300);
+        getcurrentaudiobook();
+
     }
 }
