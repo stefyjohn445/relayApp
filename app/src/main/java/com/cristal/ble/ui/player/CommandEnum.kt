@@ -3,7 +3,7 @@ package com.cristal.ble.ui.player
 class CommandEnum {
 
     private val http :String   = "http://";
-    private val suburl:String = "/P?devid=abcd&src=1&flag=1&NP=>";
+    private val suburl:String = "/P?devId=abcd&src=1&flag=1&NP=>";
 
     public val ERROR: Byte = 0x0;
     public val CONTROLCMD:Byte = 0x1;
@@ -46,6 +46,7 @@ class CommandEnum {
     public val CMD_NEXT_WIFI_RADIO_URL = byteArrayOf(CONTROLCMD,0x11);
     public val CMD_SRC_CRISTAL_CLOUD   = byteArrayOf(CONTROLCMD,0x12);
     public val CMD_SRC_CRISTAL_AUDIO_BOOK:Byte = 0x13;
+    public val CMD_SRC_CRISTAL_SPOTIFY:Byte = 0x14;
 
 
     // device source enums

@@ -125,9 +125,17 @@ interface APIService {
      *     }
      * }
      * */
-    @POST("/api/app/cloudstream")
+
+
+@GET("/api/app/cloudstream")
     fun cloudStream(
-        @Body req: CloudStreamRequest?
+        @Header("Authorization") userToken: String,
+        @Query("devId") devId: String?,
+        @Query("userId") userId: String?,
+        @Query("coludSorce") coludSorce: String?,
+        @Query("SetGet") SetGet:String?,
+        @Query("coludUrl") coludUrl: String?,
+
     ): Call<CloudStreamResponse>
 
 
@@ -138,10 +146,16 @@ interface APIService {
 
 
 
-    @POST("/api/app/getcristalcloudsonglist")
+    @GET("/api/app/getcristalcloudsonglist")
     fun getcristalcloudsonglist(
-        @Body req: CristalCloudSongListRequst?
-    ): Call<CristalCloudSongListResponse>
+        @Header("Authorization") userToken: String,
+        @Query("devId") devId: String?,
+        @Query("userId") userId: String?,
+        @Query("start") start: Int?,
+        @Query("end") end: Int?,
+
+
+        ): Call<CristalCloudSongListResponse>
 
 
 //    @GET("/api/v1/resources/clinical-facilities/{cfId}/patients/{patientId}")
@@ -156,7 +170,7 @@ interface APIService {
 
         @Header("Authorization") userToken: String,
         @Query("userId") userId: String?,
-        @Query("deviceId") deviceId: String?,
+        @Query("devId") deviceId: String?,
         @Query("imagename") imagename: String?
 
     ): Call<cristalcloudImgResponce>
@@ -173,14 +187,14 @@ interface APIService {
 
         @Header("Authorization") userToken: String,
         @Query("userId") userId: String?,
-        @Query("deviceId") deviceId: String?
+        @Query("devId") deviceId: String?
         ): Call<CristallGetCurrentSongNameResponce>
 
     @GET("/api/app/nextsong")
     fun setnextsngfromapp(
         @Header("Authorization") userToken: String,
         @Query("userId") userId: String?,
-        @Query("deviceId") deviceId: String?,
+        @Query("devId") deviceId: String?,
         @Query("music_name") music_name: String?
     ): Call<CristalSetNextSongfromAppResponce>
 
@@ -189,7 +203,7 @@ interface APIService {
     fun setnextaudiobookfromapp(
         @Header("Authorization") userToken: String,
         @Query("deviceId") deviceId: String?,
-        @Query("userId") userId: String?,
+        @Query("devId") userId: String?,
         @Query("bookname") bookname: String?,
         @Query("bookId") bookId: Int?,
         @Query("audioid") audioid: Int?,
@@ -201,7 +215,7 @@ interface APIService {
 
         @Header("Authorization") userToken: String,
         @Query("userId") userId: String?,
-        @Query("deviceId") deviceId: String?
+        @Query("devId") deviceId: String?
     ): Call<GetCurrentAudiobookResponce>
 
 }

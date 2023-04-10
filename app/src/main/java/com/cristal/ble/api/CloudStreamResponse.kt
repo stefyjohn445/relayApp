@@ -17,8 +17,7 @@ data class CloudStreamResponse(
 )
 
 data class Data(
-    val coludSorce: String,
-    val coludUrl: String,
-    val deviceId: String,
-    val userId: String
+    val coludSorce:String ,
+    val coludUrls: Array<String>,
+    val songs: Array<String>
 )

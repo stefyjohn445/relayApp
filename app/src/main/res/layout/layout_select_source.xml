@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/bt_wifi_radio" />
 
     <TextView
-        android:id="@+id/bt_wfi_spotyfi"
+        android:id="@+id/bt_wfi_spotify"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_margin="16dp"

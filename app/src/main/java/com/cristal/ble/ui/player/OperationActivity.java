@@ -30,6 +30,7 @@ import com.cristal.ble.AppPreference;
 import com.cristal.ble.MapFragment;
 import com.cristal.ble.R;
 import com.cristal.ble.api.ApiRepository;
+import com.cristal.ble.api.CloudStreamResponse;
 import com.cristal.ble.api.CristalCloudSongListResponse;
 import com.cristal.ble.api.CristalNextAudioBookFromAppResponce;
 import com.cristal.ble.api.CristalSetNextSongfromAppResponce;
@@ -85,7 +86,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     private ImageButton btnShuffle;
     private SeekBar songProgressBar;
     private boolean setsongnameflasg = false;
-    private boolean  selectmusicsource = false;
+    private boolean selectmusicsource = false;
 
 
     // Handler to update UI timer, progress bar etc,.
@@ -96,6 +97,8 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     private TextView songTotalDurationLabel;
     private TextView CurrentSong;
     private TextView CurrentSong2;
+
+    private TextView ShowCloudPlayUrl;
 
     private boolean playpuseflag = true;
 
@@ -206,6 +209,9 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         CurrentSong = (TextView) findViewById(R.id.tv_playlist);
         CurrentSong2 = (TextView) findViewById(R.id.tv_song);
 
+        ShowCloudPlayUrl = (TextView) findViewById(R.id.tv_spotify_url);
+        ShowCloudPlayUrl.setVisibility(View.GONE); //View.INVISIBLE
+
 
         btnRepeat.setOnClickListener((view) -> {
 
@@ -229,6 +235,14 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         findViewById(R.id.btn_menu).setOnClickListener((view) -> {
             showMenu(view);
         });
+
+
+        findViewById(R.id.tv_spotify_url).setOnClickListener((view) -> {
+            getcloudplayurls("","get");
+//            showcloudUrls();
+        });
+
+
 
         findViewById(R.id.tvPlaylist).setOnClickListener((view) -> {
 
@@ -355,10 +369,16 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
     private void getcurrentruningsong(){
 
-            ApiRepository.getcurrentsong("abcd", AppPreference.preference.getLoginResponse().getUser().getEmail(),AppPreference.preference.getLoginResponse().getToken(), new retrofit2.Callback<CristallGetCurrentSongNameResponce>() {
+        System.out.println("--java-> getcurrentruningsong");
+
+
+        ApiRepository.getcurrentsong("abcd", AppPreference.preference.getLoginResponse().getUser().getEmail(),AppPreference.preference.getLoginResponse().getToken(), new retrofit2.Callback<CristallGetCurrentSongNameResponce>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(retrofit2.Call<CristallGetCurrentSongNameResponce> call, retrofit2.Response<CristallGetCurrentSongNameResponce> response) {
+
+                System.out.println("--java-> ApiRepository.GetCristalImg 3333" + response.body());
+
                 if (response.body() != null) {
                     CristallGetCurrentSongNameResponce body = response.body();
                     System.out.println("--java-> ApiRepository.GetCristalImg 3333" + body.getData());
@@ -503,6 +523,52 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
     }
 
+
+    private void getcloudplayurls(String coludUrl,String SetGet){
+
+        showCloudUrls = new ArrayList<>();
+        playList   = new ArrayList<>();
+        String coludSorce = "soundcloud";
+        ApiRepository.cloudStream("abcd", AppPreference.preference.getLoginResponse().getUser().getEmail(),coludSorce,coludUrl,SetGet,
+                AppPreference.preference.getLoginResponse().getToken(), new retrofit2.Callback<CloudStreamResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<CloudStreamResponse> call, retrofit2.Response<CloudStreamResponse> response) {
+                if (response.body() != null) {
+                    CloudStreamResponse body = response.body();
+                    System.out.println("--java-> getcloudplayurls 3333" + body);
+                    System.out.println("---> " + body);
+                    if (body.getSuccess()) {
+//                      playList.add(songs);
+                        for(String url : body.getData().getColudUrls()){
+                            showCloudUrls.add(url);
+                        }
+                        if(body.getData().getColudUrls().length >0) {
+                            showcloudUrls();
+                        }
+
+                        for(String url : body.getData().getSongs()){
+                            playList.add(url);
+                        }
+
+                        if(body.getData().getSongs().length >0) {
+                            showPlaylist();
+                        }
+
+                    } else {
+                        System.out.println("---> get getcloudplayurls failed");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<CloudStreamResponse> call, Throwable t) {
+                System.out.println("---> getcloudplayurls 444 ERROR" + t);
+            }
+        });
+
+    }
+
+
     private void setnextAudioBook(String audioname) {
 
         ApiRepository.setnextaudiobookfromapp("abcd", AppPreference.preference.getLoginResponse().getUser().getEmail(),"",0,0,audioname,AppPreference.preference.getLoginResponse().getToken(), new retrofit2.Callback<CristalNextAudioBookFromAppResponce>() {
@@ -537,7 +603,19 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
         System.out.println("---> showPlaylist\n");
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, PlaylistFragment.newInstance(playList, imageSource), "playList")
+//                .add(R.id.fragment_container, PlaylistFragment.newInstance(playList, imageSource), "playList")
+                .add(R.id.fragment_container, PlaylistFragment.newInstance(playList, 0), "playList")
+
+                .addToBackStack("playList")
+                .commit();
+
+    }
+
+    private void showcloudUrls() {
+
+        System.out.println("---> showPlaylist\n");
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, PlaylistFragment.newInstance(showCloudUrls, imageSource), "playList")
                 .addToBackStack("playList")
                 .commit();
 
@@ -730,7 +808,16 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             MusicSourcedialog.dismiss();
         });
 
+        MusicSourcedialog.findViewById(R.id.bt_wfi_spotify).setOnClickListener(v -> {
+            playList = new ArrayList<>();
+//          showCloud();
+            sendMusicControlCmd(CMD.builControllcomand(CMD.getCMD_SRC_CRISTAL_SPOTIFY()));
+            ShowCloudPlayUrl.setVisibility(View.VISIBLE);
 
+            imageSource = 5;
+            MusicSourcedialog.dismiss();
+            selectmusicsource = false;
+        });
 
         MusicSourcedialog.show();
 
@@ -748,20 +835,6 @@ public class OperationActivity extends AppCompatActivity implements Observer,
      * */
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
-//            long totalDuration = mp.getDuration();
-//            long currentDuration = mp.getCurrentPosition();
-//
-//            // Displaying Total Duration time
-//            songTotalDurationLabel.setText(""+utils.milliSecondsToTimer(totalDuration));
-//            // Displaying time completed playing
-//            songCurrentDurationLabel.setText(""+utils.milliSecondsToTimer(currentDuration));
-
-            // Updating progress bar
-//            int progress = 2;
-            //Log.d("Progress", ""+progress);
-//            songProgressBar.setProgress(progress);
-
-            // Running this thread after 100 milliseconds
             mHandler.postDelayed(this, 100);
         }
     };
@@ -882,13 +955,25 @@ public class OperationActivity extends AppCompatActivity implements Observer,
         }
         else if(src == CMD.getWIFI_RADIO()){
             deviceCurrentSource = "Wifi Radio";
+            if(selectmusicsource){
+                MusicSourcedialog.dismiss();
+
+            }
         }
         else if(src == CMD.getWIFI_CRISTATL_CLOUD()){
             deviceCurrentSource = "Cristal Cloud";
+            if(selectmusicsource){
+                MusicSourcedialog.dismiss();
+
+            }
         }
         else if(src == CMD.getWIFI_AUDIO_BOOK()){
 
             deviceCurrentSource = "Wifi Audio Book";
+            if(selectmusicsource){
+                MusicSourcedialog.dismiss();
+
+            }
 
         }
         else if(src == CMD.getWIFI_SPOTIFY()){
@@ -903,6 +988,8 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     }
 
     ArrayList<String> playList = new ArrayList<>();
+    ArrayList<String> showCloudUrls = new ArrayList<>();
+
     private void getNotification(){
 
 
@@ -1168,9 +1255,10 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             System.out.println("---> next audion "+url);
             setnextAudioBook(url);
         }
-//        else if(deviceCurrentSourceBite == CMD.getWIFI_SPOTIFY()){
-//            deviceCurrentSource = "Wifi Spotify";
-//        }
+        else if(deviceCurrentSourceBite == CMD.getWIFI_SPOTIFY()){
+
+            getcloudplayurls(url,"get");
+        }
 //        else if(deviceCurrentSourceBite == CMD.getSRC_END()){
 //            deviceCurrentSource = "ERORR";
 //        }

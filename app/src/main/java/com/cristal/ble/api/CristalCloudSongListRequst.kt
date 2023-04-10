@@ -2,7 +2,7 @@ package com.cristal.ble.api
 
 data class CristalCloudSongListRequst(
 
-    val deviceId: String,
+    val devId: String,
     val userId: String,
     val start:Int,
     val end:Int

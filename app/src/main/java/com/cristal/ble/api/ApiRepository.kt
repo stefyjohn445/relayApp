@@ -1,6 +1,7 @@
 package com.cristal.ble.api
 
 import retrofit2.Callback
+import retrofit2.http.Query
 
 
 class ApiRepository {
@@ -40,24 +41,32 @@ class ApiRepository {
             apiInterface.login(req = req).enqueue(listener)
         }
 
+
+        @JvmStatic
         fun cloudStream(
+            devId: String,
+            userId : String,
+            coludSorce: String,
+            coludUrl: String,
+            SetGet:String,
+            userToken:String,
             listener: Callback<CloudStreamResponse>
         ) {
 
             val req = CloudStreamRequest(
-                coludSorce = "deviceid",
-                coludUrl = "DUMMY_EMAIL",
-                deviceId = "soundcloud",
-                userId = "https://soundcloud.com/sophus-stein/sets/test_songs/s-1QkQvjMr9xt"
+                coludSorce = coludSorce,
+                coludUrl = userId,
+                deviceId = coludSorce,
+                userId = coludUrl
             )
 
             val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
-            apiInterface.cloudStream(req = req).enqueue(listener)
+            apiInterface.cloudStream(userId=userId, devId = devId, coludSorce = coludSorce, coludUrl = coludUrl, userToken = userToken, SetGet = SetGet).enqueue(listener)
         }
 
         @JvmStatic
         fun CristalCloudSongList(
-            deviceId : String,
+            devId : String,
             userId   : String,
             userToken: String,
             start:Int,
@@ -67,14 +76,14 @@ class ApiRepository {
 
             val req = CristalCloudSongListRequst(
 
-                 deviceId =deviceId,
+                 devId = devId,
                  userId = userId,
                  start = start,
                  end = end
             )
 
             val apiInterface: APIService = RetrofitClient.postClientToken(RetrofitClient.url,userToken).create(APIService::class.java)
-            apiInterface.getcristalcloudsonglist(req = req).enqueue(listener)
+            apiInterface.getcristalcloudsonglist(userId=userId, devId=devId, start =start, end = end, userToken = userToken ).enqueue(listener)
         }
 
         fun GeoWifiRadio(

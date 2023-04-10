@@ -51,7 +51,7 @@ class PlaylistFragment : Fragment()  {
         val view = inflater.inflate(R.layout.fragment_playlist, container, false)
 
         val addSongs = view.findViewById<TextView>(R.id.tv_add_songs)
-        addSongs.visibility = if (playlist_source == 3) View.VISIBLE else View.GONE
+        addSongs.visibility = if (playlist_source == 5) View.VISIBLE else View.GONE
         addSongs.setOnClickListener {
             Toast.makeText(context, "Add songs", Toast.LENGTH_SHORT).show()
 
