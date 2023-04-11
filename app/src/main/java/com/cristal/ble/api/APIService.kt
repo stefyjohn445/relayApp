@@ -187,13 +187,16 @@ interface APIService {
 
         @Header("Authorization") userToken: String,
         @Query("userId") userId: String?,
-        @Query("devId") deviceId: String?
+        @Query("devId") deviceId: String?,
+        @Query("src") src: String?
+
         ): Call<CristallGetCurrentSongNameResponce>
 
     @GET("/api/app/nextsong")
     fun setnextsngfromapp(
         @Header("Authorization") userToken: String,
         @Query("userId") userId: String?,
+        @Query("src") src: String?,
         @Query("devId") deviceId: String?,
         @Query("music_name") music_name: String?
     ): Call<CristalSetNextSongfromAppResponce>

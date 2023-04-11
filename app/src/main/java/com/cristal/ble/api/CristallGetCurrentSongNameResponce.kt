@@ -7,6 +7,7 @@ data class CristallGetCurrentSongNameResponce(
 
 data class data_resp(
 
-    val music_name: String
+    val music_name: String,
+    val img:String
 
 )

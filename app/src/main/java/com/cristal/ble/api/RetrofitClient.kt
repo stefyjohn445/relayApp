@@ -19,9 +19,9 @@ object RetrofitClient {
 
 //  val url = 'http://127.0.0.1:3001/'
 //    val url = "http://192.168.0.114:3001/"
-   val url = "http://192.168.29.220:3001/"
+//   val url = "http://192.168.29.220:3001/"
 //    val url = "http://192.168.69.147:3001/"
-//    val url = "http://192.168.145.147:3001"
+    val url = "http://192.168.137.147:3001"
 
 
     fun getClient(baseUrl: String?): Retrofit {

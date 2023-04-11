@@ -152,13 +152,14 @@ class ApiRepository {
         fun getcurrentsong(
             deviceId : String,
             userId   : String,
+            src:String,
             userToken: String,
             listener: Callback<CristallGetCurrentSongNameResponce>
         ) {
 
             val apiInterface: APIService = RetrofitClient.postClientToken(RetrofitClient.url,userToken).create(APIService::class.java)
 
-            apiInterface.getcurrentsong(userId = userId, deviceId = deviceId , userToken = userToken).enqueue(listener)
+            apiInterface.getcurrentsong(userId = userId, deviceId = deviceId , userToken = userToken, src = src).enqueue(listener)
 
         }
 
@@ -166,6 +167,7 @@ class ApiRepository {
         fun setnextsngfromapp(
             deviceId : String,
             music_name: String,
+            src       :String,
             userId   : String,
             userToken: String,
             listener: Callback<CristalSetNextSongfromAppResponce>
@@ -173,7 +175,7 @@ class ApiRepository {
 
             val apiInterface: APIService = RetrofitClient.getClient(RetrofitClient.url).create(APIService::class.java)
 
-            apiInterface.setnextsngfromapp(userId = userId, deviceId = deviceId , userToken = userToken, music_name = music_name).enqueue(listener)
+            apiInterface.setnextsngfromapp(userId = userId, deviceId = deviceId , src = src, userToken = userToken, music_name = music_name).enqueue(listener)
 
         }
         @JvmStatic
