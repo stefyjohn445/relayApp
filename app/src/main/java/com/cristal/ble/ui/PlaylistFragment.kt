@@ -1,5 +1,6 @@
 package com.cristal.ble.ui
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -34,6 +36,7 @@ class PlaylistFragment : Fragment()  {
     var mPlaylistAdapter: PlaylistAdapter? = null
     private var progressDialog: ProgressDialog? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,6 +46,7 @@ class PlaylistFragment : Fragment()  {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -51,7 +55,10 @@ class PlaylistFragment : Fragment()  {
         val view = inflater.inflate(R.layout.fragment_playlist, container, false)
 
         val addSongs = view.findViewById<TextView>(R.id.tv_add_songs)
+
+
         addSongs.visibility = if (playlist_source == 5) View.VISIBLE else View.GONE
+
         addSongs.setOnClickListener {
             Toast.makeText(context, "Add songs", Toast.LENGTH_SHORT).show()
 
@@ -60,13 +67,24 @@ class PlaylistFragment : Fragment()  {
             dialog.setContentView(R.layout.layout_add_songs)
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             dialog.setCancelable(false)
+//            val cloudsongurls : EditText? = dialog.findViewById<View>(R.id.song_url) as EditText;
+
+            var cloud_url: EditText = dialog.findViewById<View>(R.id.song_url) as EditText
+
 //            dialog.getWindow().getAttributes().windowAnimations = R.style.animation
 
-//            cancel_text = dialog.findViewById(R.id.cancel_text)
+
 
             dialog.findViewById<TextView>(R.id.bt_done).setOnClickListener(View.OnClickListener {
                 dialog.dismiss()
-                Toast.makeText(context, "okay clicked", Toast.LENGTH_SHORT).show()
+                val url = cloud_url.text.toString();
+                System.out.println("user uld:"+cloud_url.text.toString());
+                if (url != null) {
+                    mListener?.sendCommand("set:$url")
+
+                };
+                Toast.makeText(context, "okay clicked ", Toast.LENGTH_SHORT).show()
+
             })
 
             dialog.show()
@@ -101,7 +119,7 @@ class PlaylistFragment : Fragment()  {
                 // TODO: 26/03/23 play this user selected sone
                 System.out.println("selected song ->> "+song);
                 if (song != null) {
-                    mListener?.sendCommand(song)
+                    mListener?.sendCommand("get:$song")
 
                 };
             }

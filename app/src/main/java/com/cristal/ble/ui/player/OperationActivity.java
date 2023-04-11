@@ -274,7 +274,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                 showPlaylist();
             }
             else if(deviceCurrentSourceBite == CMD.getWIFI_SPOTIFY()){
-                deviceCurrentSource = "Wifi Spotify";
+                deviceCurrentSource = "Wifi Soundcloud";
                 getcloudplayurls("","get");
 
             }
@@ -451,7 +451,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
         if (img==null)
             img = "";
-        
+
         Glide.with(OperationActivity.this)
                 .load( Base64.decode(img, Base64.DEFAULT))
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE).placeholder(R.drawable.song_logo)
@@ -695,8 +695,8 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                         selectMusicSource();
                         break;
                     case R.id.menuAbout:
-//                        sendCriatalcloudUrl("192.168.29.220:3001");
-                        sendCriatalcloudUrl("192.168.137.147:3001");
+                        sendCriatalcloudUrl("192.168.29.220:3001");
+//                        sendCriatalcloudUrl("192.168.137.147:3001");
 
                         Toast.makeText(OperationActivity.this, "menuAbout", Toast.LENGTH_SHORT).show();
 //                        imaget.getCristalCloudImages();
@@ -832,7 +832,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             MusicSourcedialog.dismiss();
         });
 
-        MusicSourcedialog.findViewById(R.id.bt_wfi_spotify).setOnClickListener(v -> {
+        MusicSourcedialog.findViewById(R.id.bt_wfi_soundcloud).setOnClickListener(v -> {
             putImageOnScreen("");
             playList = new ArrayList<>();
 //          showCloud();
@@ -915,7 +915,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             getcurrentaudiobook();
         }
         else if(deviceCurrentSourceBite == CMD.getWIFI_SPOTIFY()){
-            deviceCurrentSource = "Wifi Spotify";
+            deviceCurrentSource = "Wifi Soundcloud";
             getcurrentruningsong("3");
 
         }
@@ -1004,7 +1004,10 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
         }
         else if(src == CMD.getWIFI_SPOTIFY()){
-            deviceCurrentSource = "Wifi Spotify";
+            deviceCurrentSource = "Wifi Soundcloud";
+            imageSource = 5;
+
+
         }
         else if(src == CMD.getSRC_END()){
             deviceCurrentSource = "ERORR";
@@ -1283,12 +1286,25 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             setnextAudioBook(url);
         }
         else if(deviceCurrentSourceBite == CMD.getWIFI_SPOTIFY()){
+
+            System.out.println("WIFI_SPOTIFY: "+showPlaylistFlag);
+
+            String action = url.substring(0, 3);   //"get:" ->4 need 3 get:https://soundcloud.com/sophus-stein/sets/test_songs/s-1QkQvjMr9xt
+            String tmpurl = url.substring(4);
+
+            System.out.println("WIFI_SPOTIFY 1: "+action);
+            System.out.println("WIFI_SPOTIFY 2: "+tmpurl);
+
+
+
             if(showPlaylistFlag){
 
-                setnextcristalcludsong(url,"3");
+                setnextcristalcludsong(tmpurl,"3");
             }
             else{
-                getcloudplayurls(url,"get");
+
+
+                getcloudplayurls(tmpurl,action);
 
             }
 
