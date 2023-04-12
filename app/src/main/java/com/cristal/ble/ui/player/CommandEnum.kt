@@ -24,6 +24,7 @@ class CommandEnum {
 
     public val PLAYBUTTONCURRENTSTATUS: Byte = 0xc;
     public val CURRENTSRCSTATUS:    Byte = 0xd;
+    public val WIFICONMECTIONSTATUS: Byte = 0xe;
 
 
     public val CMD_NONE = byteArrayOf(CONTROLCMD,0x0);
@@ -39,7 +40,7 @@ class CommandEnum {
     public val CMD_SRC_WIFI = byteArrayOf(CONTROLCMD,0x0A)
     public val CMD_SRC_SD = byteArrayOf(CONTROLCMD,0xB);
     public val CMD_SRC_BLUTOOTH_STREAM = byteArrayOf(CONTROLCMD,0xC);
-    public val CMD_SRC_WIFI_FM = byteArrayOf(CONTROLCMD,0xD);
+    public val CMD_SRC_WIFI_CONNECTION_TEST: Byte = 0xD;
     public val CMD_SEND_SRC_SOURS_STATUS = byteArrayOf(CONTROLCMDSTATUS,0xE);
     public val CMD_HET_SONG_FROM_NVS_MEMORY = byteArrayOf(CONTROLCMD,0xF);
     public val CMD_PLAYBUTTON_CURRENT_STATUS = byteArrayOf(CONTROLCMDSTATUS, 0x10);
@@ -47,6 +48,7 @@ class CommandEnum {
     public val CMD_SRC_CRISTAL_CLOUD   = byteArrayOf(CONTROLCMD,0x12);
     public val CMD_SRC_CRISTAL_AUDIO_BOOK:Byte = 0x13;
     public val CMD_SRC_CRISTAL_SPOTIFY:Byte = 0x14;
+
 
 
     // device source enums

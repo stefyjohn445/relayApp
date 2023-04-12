@@ -2,6 +2,7 @@ package com.cristal.ble.ui.player;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.os.Bundle;
@@ -100,7 +101,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
 
     private TextView ShowCloudPlayUrl;
     TextView sourceShow;
-
+    private Dialog wifiConfigDialog;
     private boolean showPlaylistFlag = false;
 
     private boolean playpuseflag = true;
@@ -118,6 +119,10 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     private Byte deviceCurrentSourceBite = 0x0;
 
     private Dialog MusicSourcedialog = null;
+    ProgressDialog loddertProgress;
+
+    public OperationActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -584,7 +589,25 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     }
 
 
-    private void setnextAudioBook(String audioname) {
+    private void showloder(String fistsr,String secondsr){
+        loddertProgress = new ProgressDialog(OperationActivity.this);
+        loddertProgress.setTitle(fistsr);
+        loddertProgress.setMessage(secondsr);
+        loddertProgress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        loddertProgress.show();
+    }
+    private void closloder(String secondsr,boolean action) {
+        loddertProgress.setMessage(secondsr);
+        loddertProgress.setCancelable(true); // disable dismiss by tapping outside of the dialog
+        if(action)
+            loddertProgress.dismiss();
+
+//        mHandler.postDelayed(mUpdateTimeTask, 2000);
+
+    }
+
+
+        private void setnextAudioBook(String audioname) {
 
         ApiRepository.setnextaudiobookfromapp("abcd", AppPreference.preference.getLoginResponse().getUser().getEmail(),"",0,0,audioname,AppPreference.preference.getLoginResponse().getToken(), new retrofit2.Callback<CristalNextAudioBookFromAppResponce>() {
         @Override
@@ -695,13 +718,10 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                         selectMusicSource();
                         break;
                     case R.id.menuAbout:
+
                         sendCriatalcloudUrl("192.168.29.220:3001");
 //                        sendCriatalcloudUrl("192.168.137.147:3001");
-
                         Toast.makeText(OperationActivity.this, "menuAbout", Toast.LENGTH_SHORT).show();
-//                        imaget.getCristalCloudImages();
-//                        showSongImage();
-//                        getcurrentruningsong();
 
                         break;
                     case R.id.menuLogout:
@@ -745,25 +765,29 @@ public class OperationActivity extends AppCompatActivity implements Observer,
     }
 
     private void wifiConfig() {
-        final Dialog dialog = new Dialog(OperationActivity.this);
-        dialog.setContentView(R.layout.wifi_config);
-        wifi_ssid = (EditText) dialog.findViewById(R.id.wifi_ssid);
-        wifi_password = (EditText) dialog.findViewById(R.id.wifi_password);
-        dialog.findViewById(R.id.done).setOnClickListener(v -> {
+//        final Dialog dialog = new Dialog(OperationActivity.this);
+        wifiConfigDialog = new Dialog(OperationActivity.this);
+        wifiConfigDialog.setContentView(R.layout.wifi_config);
+        wifi_ssid = (EditText) wifiConfigDialog.findViewById(R.id.wifi_ssid);
+        wifi_password = (EditText) wifiConfigDialog.findViewById(R.id.wifi_password);
+        wifiConfigDialog.findViewById(R.id.done).setOnClickListener(v -> {
 
             System.out.println("wifi config\n");
-            if(get_wifi_config_to_device())
-                dialog.dismiss();
+            if(get_wifi_config_to_device()) {
+//                wifiConfigDialog.dismiss();
+                Toast.makeText(this, "write sucsess", Toast.LENGTH_SHORT).show();
+                showloder("Configuring", "wait while collection ...");
+            }
             else{
                 Toast.makeText(this, "please enter the ssid and password", Toast.LENGTH_SHORT).show();
 
             }
         });
-        dialog.findViewById(R.id.cancel).setOnClickListener(v -> {
-            dialog.dismiss();
+        wifiConfigDialog.findViewById(R.id.cancel).setOnClickListener(v -> {
+            wifiConfigDialog.dismiss();
         });
 
-        dialog.show();
+        wifiConfigDialog.show();
 
     }
 
@@ -876,6 +900,7 @@ public class OperationActivity extends AppCompatActivity implements Observer,
             send_wifi_config_to_device(CMD.getWIFIUSER(), ssid.getBytes());
             send_wifi_config_to_device(CMD.getWIFIPASS(), passwd.getBytes());
             System.out.println("###################################### "+ssid.length()+"->"+ssid+" -- "+passwd.length()+"-->"+ passwd);
+            sendMusicControlCmd(CMD.builControllcomand( CMD.getCMD_SRC_WIFI_CONNECTION_TEST()));
             return true;
         }else{
             System.out.println("Please enter the password and  ssid");
@@ -1095,6 +1120,21 @@ public class OperationActivity extends AppCompatActivity implements Observer,
                             CurrentSong2.setText(tmp.substring(1));
                             setsongnameflasg = true;
 
+
+                        }
+                        else if(data[0] == CMD.getWIFICONMECTIONSTATUS()){
+                            System.out.println("getCMD_SRC_WIFI_CONNECTION_TEST    -----> "+tmp.substring(1));
+                            if(data[1] == 0){
+                                System.out.println("getCMD_SRC_WIFI_CONNECTION_TEST ok   -----> ");
+                                closloder("Sucess: Wifi Config",true);
+                                Toast.makeText(OperationActivity.this, "Sucess: Wifi Config", Toast.LENGTH_SHORT).show();
+                                wifiConfigDialog.dismiss();
+                            }else{
+                                System.out.println("getCMD_SRC_WIFI_CONNECTION_TEST Error   -----> ");
+                                closloder("Failed: Wifi Config",false);
+                                Toast.makeText(OperationActivity.this, "Error: Wifi Config", Toast.LENGTH_SHORT).show();
+
+                            }
 
                         }
                         else if(data[0] == CMD.getCMD_PLAYBUTTON_CURRENT_STATUS()[1]){
